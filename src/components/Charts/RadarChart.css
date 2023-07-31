@@ -1,0 +1,12 @@
+.LineChart {
+  position: relative;
+  padding-left: 40px;
+  padding-bottom: 40px;
+}
+
+svg {
+  fill: none;
+  stroke: #838383;
+  display: block;
+  stroke-width: 2px;
+}
