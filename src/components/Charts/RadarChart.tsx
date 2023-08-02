@@ -1,17 +1,23 @@
 import './RadarChart.css';
 import { useEffect, useState } from 'react';
-import RadarChartLayout from './RadarChartLayout.ts';
+import RadarChartLayout, { AxisUncalculated } from './RadarChartLayout';
 
-export default function RadarChart(props: { numberAxes: number }) {
-	const [chartLayout, setChartLayout] = useState(new RadarChartLayout({ axes: props.numberAxes }));
+export default function RadarChart(props: { axes: AxisUncalculated[] }) {
+	const [chartLayout, setChartLayout] = useState(new RadarChartLayout(props.axes));
 	const [axesPathElements, setAxesPathsElements] = useState<React.JSX.Element[]>();
+	const [radialPathElements, setRadialPathElements] = useState<React.JSX.Element[]>();
 
 	useEffect(
 		() => {
-			const rawPaths = chartLayout.getAxesPaths();
-			const pathElements = rawPaths.map((p, i) => <path d={p} key={'chartPath-' + i} />);
+			const rawAxesPaths = chartLayout.getAxesPaths();
+			const axesPathElements = rawAxesPaths.map((p, i) => <path d={p} key={'axisPath-' + i} />);
 
-			setAxesPathsElements(pathElements);
+			setAxesPathsElements(axesPathElements);
+
+			const rawRadialPaths = chartLayout.getRadialEdgesPaths();
+			const radialPathElements = rawRadialPaths.map((p, i) => <path d={p} key={'radialPath-' + i} />);
+
+			setRadialPathElements(radialPathElements);
 		},
 		[chartLayout]
 	);
@@ -26,6 +32,7 @@ export default function RadarChart(props: { numberAxes: number }) {
 		>
 			<svg width={chartLayout.width} height={chartLayout.height}>
 				{axesPathElements}
+				{radialPathElements}
 			</svg>
 		</div>
 	);
