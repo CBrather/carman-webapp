@@ -9,15 +9,8 @@ export default function RadarChart(props: { axes: AxisUncalculated[] }) {
 
 	useEffect(
 		() => {
-			const rawAxesPaths = chartLayout.getAxesPaths();
-			const axesPathElements = rawAxesPaths.map((p, i) => <path d={p} key={'axisPath-' + i} />);
-
-			setAxesPathsElements(axesPathElements);
-
-			const rawRadialPaths = chartLayout.getRadialEdgesPaths();
-			const radialPathElements = rawRadialPaths.map((p, i) => <path d={p} key={'radialPath-' + i} />);
-
-			setRadialPathElements(radialPathElements);
+			setAxesPathsElements(chartLayout.getAxesPathElements());
+			setRadialPathElements(chartLayout.getRadialEdgesPathElements());
 		},
 		[chartLayout]
 	);

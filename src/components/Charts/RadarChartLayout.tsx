@@ -77,12 +77,12 @@ export default class RadarChartLayout {
     }
   }
 
-  getAxesPaths = () : string[] => {
-    const axesPaths: string[] = [];
+  getAxesPathElements = () : React.JSX.Element[] => {
+    const axesPaths: React.JSX.Element[] = [];
 
     for (let axis of this.axes) {
       const axisPath = this.getAxisPath(axis);
-      axesPaths.push(axisPath);
+      axesPaths.push(<path d={axisPath} key={axis.label} />);
     }
 
     return axesPaths
@@ -94,12 +94,13 @@ export default class RadarChartLayout {
     return this.buildSvgPath([this.center, ...pathPoints]);
   }
 
-  getRadialEdgesPaths = () : string[] => {
-    const edgePaths: string[] = []
+  getRadialEdgesPathElements = () : React.JSX.Element[] => {
+    const edgePaths: React.JSX.Element[] = []
 
-    for (let edgePoints of this.radialEdges) {
+    for (let i = 0; i < this.radialEdges.length; i++) {
+      const edgePoints = this.radialEdges[i]
       const path = this.buildSvgPath(edgePoints, true)
-      edgePaths.push(path)
+      edgePaths.push(<path d={path} key={i}/>)
     }
 
     return edgePaths
