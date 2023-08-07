@@ -1,22 +1,24 @@
-import './App.css'
-import RadarChart from './components/Charts/RadarChart'
-import { AxisUncalculated } from './components/Charts/RadarChartLayout';
-
-const axes: AxisUncalculated[] = [
-  {label: "a", ticks: [{label: "a"},{label: "a"},{label: "a"},{label: "a"},{label: "a"}]},
-  {label: "a", ticks: [{label: "a"},{label: "a"},{label: "a"},{label: "a"},{label: "a"}]},
-  {label: "a", ticks: [{label: "a"},{label: "a"},{label: "a"},{label: "a"},{label: "a"}]},
-  {label: "a", ticks: [{label: "a"},{label: "a"},{label: "a"},{label: "a"},{label: "a"}]},
-  {label: "a", ticks: [{label: "a"},{label: "a"},{label: "a"},{label: "a"},{label: "a"}]},
-  {label: "a", ticks: [{label: "a"},{label: "a"},{label: "a"},{label: "a"},{label: "a"}]}
-]
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import RadarChart from './components/Charts/RadarChart';
+import { ChartConfigForm } from './components/Forms/ChartConfigForm';
 
 function App() {
-  return (
-    <>
-      <RadarChart axes={axes}/>
-    </>
-  )
+	return (
+		<Container fluid>
+			<Row>
+				<Col>
+					<RadarChart />
+				</Col>
+				<Col>
+					<ChartConfigForm />
+				</Col>
+			</Row>
+		</Container>
+	);
 }
 
-export default App
+export default App;
