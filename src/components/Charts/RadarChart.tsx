@@ -1,19 +1,24 @@
 import './RadarChart.css';
 import { useEffect, useState } from 'react';
-import RadarChartLayout, { AxisUncalculated } from './RadarChartLayout';
+import { useSelector } from 'react-redux';
+import RadarChartLayout from './RadarChartLayout';
+import { selectAxes, selectChartConfig } from '../../store/slices/RadarChartConfig';
 
-export default function RadarChart(props: { axes: AxisUncalculated[] }) {
-	const [chartLayout, setChartLayout] = useState(new RadarChartLayout(props.axes));
+export default function RadarChart() {
+	const [chartLayout, setChartLayout] = useState(new RadarChartLayout(useSelector(selectAxes)));
 	const [axesPathElements, setAxesPathsElements] = useState<React.JSX.Element[]>();
 	const [radialPathElements, setRadialPathElements] = useState<React.JSX.Element[]>();
 
-	useEffect(
-		() => {
-			setAxesPathsElements(chartLayout.getAxesPathElements());
-			setRadialPathElements(chartLayout.getRadialEdgesPathElements());
-		},
-		[chartLayout]
-	);
+	const chartConfig = useSelector(selectChartConfig);
+
+	useEffect(() => {
+		setChartLayout(new RadarChartLayout(chartConfig.axes));
+	}, [chartConfig]);
+
+	useEffect(() => {
+		setAxesPathsElements(chartLayout.getAxesPathElements());
+		setRadialPathElements(chartLayout.getRadialEdgesPathElements());
+	}, [chartLayout]);
 
 	return (
 		<div

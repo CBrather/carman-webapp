@@ -1,147 +1,124 @@
-export type Coordinate = {
-	x: number;
-	y: number;
-};
+import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
 
 export type RadarChartLayoutOptions = {
-  height?: number
-  width?: number
-  startingAngle?: number
-}
+	height?: number;
+	width?: number;
+	startingAngle?: number;
+};
 
 export default class RadarChartLayout {
-	width = 1200;
+	width = 750;
 	height = 750;
-  sections = 5;
-  startingAngle = 0;
-  angleInterval: number;
-  center: Coordinate;
-  radius: number;
+	sections = 5;
+	startingAngle = 0;
+	angleInterval: number;
+	center: Coordinate2D;
+	radius: number;
 
-  private axes: Axis[] = []
-  private radialEdges: Coordinate[][] = []
+	private axes: Axis[] = [];
+	private radialEdges: Coordinate2D[][] = [];
 
-	constructor(axes: AxisUncalculated[], opts?: RadarChartLayoutOptions) {
-    if (axes.length == 0) throw Error("No axes provided to RadarChart on initialization")
+	constructor(axes: Axis[], opts?: RadarChartLayoutOptions) {
+		if (axes.length == 0) throw Error('No axes provided to RadarChart on initialization');
 
-		this.width = opts?.width ? opts.width : this.width
-		this.height = opts?.height ? opts.height : this.height
-    this.startingAngle = opts?.startingAngle ? opts.startingAngle : this.startingAngle
+		this.width = opts?.width ? opts.width : this.width;
+		this.height = opts?.height ? opts.height : this.height;
+		this.startingAngle = opts?.startingAngle ? opts.startingAngle : this.startingAngle;
 
-    this.center = { x: this.width/2, y: this.height/2}
-    this.radius = Math.min(this.width, this.height) * 0.45
+		this.center = { x: this.width / 2, y: this.height / 2 };
+		this.radius = Math.min(this.width, this.height) * 0.45;
 
-    this.sections = axes[0]?.ticks.length ?? 1
-    this.angleInterval = 360 / axes.length
-    
-    this.calculateAxes(axes)
+		this.sections = axes[0]?.ticks.length ?? 1;
+		this.angleInterval = 360 / axes.length;
+
+		this.calculateAxes(JSON.parse(JSON.stringify(axes)));
 	}
 
-  calculateAxes = (axes: Axis[] | AxisUncalculated[]) : void => {
-    this.axes = axes.map((axis, i) : Axis => {
-      return this.calculateAxisTicks(axis, this.startingAngle + i * this.angleInterval)
-    })
+	calculateAxes = (axes: Axis[]): void => {
+		this.axes = axes.map((axis, i): Axis => {
+			return this.calculateAxisTicks(axis, this.startingAngle + i * this.angleInterval);
+		});
 
-    this.calculateRadialEdges()
-  }
+		this.calculateRadialEdges();
+	};
 
-  recalculateAxes = () : void => {
-    this.calculateAxes(this.axes)
-  }
+	recalculateAxes = (): void => {
+		this.calculateAxes(this.axes);
+	};
 
-  calculateAxisTicks = (axis: Axis | AxisUncalculated, angle: number): Axis => {
-    const points: Coordinate[] = [this.center];
-    const pointInterval = this.radius / this.sections;
-    const angleRad = degrees2Radians(angle);
-  
-    let previousPoint = points[0];
-    for (let tick of axis.ticks) {
-      let nextPoint: Coordinate = {
-        x: previousPoint.x + pointInterval * Math.cos(angleRad),
-        y: previousPoint.y + pointInterval * Math.sin(angleRad)
-      };
-  
-      tick.location = nextPoint;
-      previousPoint = nextPoint;
-    }
-  
-    return axis as Axis;
-  }
+	calculateAxisTicks = (axis: Axis, angle: number): Axis => {
+		const points: Coordinate2D[] = [this.center];
+		const pointInterval = this.radius / this.sections;
+		const angleRad = degrees2Radians(angle);
 
-  calculateRadialEdges = () : void => {
-    this.radialEdges = []
+		let previousPoint = points[0];
+		for (const tick of axis.ticks) {
+			const nextPoint: Coordinate2D = {
+				x: previousPoint.x + pointInterval * Math.cos(angleRad),
+				y: previousPoint.y + pointInterval * Math.sin(angleRad)
+			};
 
-    for (let i = 0; i < this.sections; i++) {
-      const sectionPoints = this.axes.map(axis => axis.ticks[i].location)
-      this.radialEdges.push(sectionPoints)
-    }
-  }
+			tick.location = nextPoint;
+			previousPoint = nextPoint;
+		}
 
-  getAxesPathElements = () : React.JSX.Element[] => {
-    const axesPaths: React.JSX.Element[] = [];
+		return axis;
+	};
 
-    for (let axis of this.axes) {
-      const axisPath = this.getAxisPath(axis);
-      axesPaths.push(<path d={axisPath} key={axis.label} />);
-    }
+	calculateRadialEdges = (): void => {
+		this.radialEdges = [];
 
-    return axesPaths
-  }
+		for (let i = 0; i < this.sections; i++) {
+			const sectionPoints = this.axes.map((axis) => axis.ticks[i].location);
+			this.radialEdges.push(sectionPoints);
+		}
+	};
 
-  getAxisPath = (axis: Axis) : string =>  {
-    let pathPoints = axis.ticks.map(tick => tick.location)
-  
-    return this.buildSvgPath([this.center, ...pathPoints]);
-  }
+	getAxesPathElements = (): React.JSX.Element[] => {
+		const axesPaths: React.JSX.Element[] = [];
 
-  getRadialEdgesPathElements = () : React.JSX.Element[] => {
-    const edgePaths: React.JSX.Element[] = []
+		for (let i = 0; i < this.axes.length; i++) {
+			const axisPath = this.getAxisPath(this.axes[i]);
+			axesPaths.push(<path d={axisPath} key={this.axes[i].label + i} />);
+		}
 
-    for (let i = 0; i < this.radialEdges.length; i++) {
-      const edgePoints = this.radialEdges[i]
-      const path = this.buildSvgPath(edgePoints, true)
-      edgePaths.push(<path d={path} key={i}/>)
-    }
+		return axesPaths;
+	};
 
-    return edgePaths
-  }
+	getAxisPath = (axis: Axis): string => {
+		const pathPoints = axis.ticks.map((tick) => tick.location);
 
-  buildSvgPath = (pathPoints: Coordinate[], close: boolean = false) : string => {
-    let path = `
+		return this.buildSvgPath([this.center, ...pathPoints]);
+	};
+
+	getRadialEdgesPathElements = (): React.JSX.Element[] => {
+		const edgePaths: React.JSX.Element[] = [];
+
+		for (let i = 0; i < this.radialEdges.length; i++) {
+			const edgePoints = this.radialEdges[i];
+			const path = this.buildSvgPath(edgePoints, true);
+			edgePaths.push(<path d={path} key={i} />);
+		}
+
+		return edgePaths;
+	};
+
+	buildSvgPath = (pathPoints: Coordinate2D[], close: boolean = false): string => {
+		let path = `
     M${pathPoints[0].x} ${pathPoints[0].y} 
     ${pathPoints
-      .slice(1)
-      .map(point => {
-        return `L${point.x} ${point.y}`
-      })
-      
-      .join(' ')}
+			.slice(1)
+			.map((point) => {
+				return `L${point.x} ${point.y}`;
+			})
+
+			.join(' ')}
     `;
 
-    if (close) path += ` L${pathPoints[0].x} ${pathPoints[0].y}`
+		if (close) path += ` L${pathPoints[0].x} ${pathPoints[0].y}`;
 
-    return path
-  }
-}
-
-export type AxisUncalculated = {
-  label: string
-  ticks: AxisTickUncalculated[]
-}
-
-type Axis = {
-  label: string
-  ticks: AxisTick[]
-}
-
-type AxisTick = {
-  label: string
-  location: Coordinate
-}
-
-type AxisTickUncalculated = {
-  label: string
-  location?: Coordinate
+		return path;
+	};
 }
 
 function degrees2Radians(degrees: number): number {
