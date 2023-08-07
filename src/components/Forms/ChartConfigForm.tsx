@@ -46,9 +46,10 @@ export function ChartConfigForm() {
 	return (
 		<Form>
 			<Row>
-				<Col>
+				<Col md="3" className='px-4'>
 					<Form.Label className="text-white">Amount of Axes</Form.Label>
 					<Form.Control
+            className='form-control-sm'
 						type="number"
 						value={axesAmount}
 						onChange={(event) => {
@@ -57,9 +58,10 @@ export function ChartConfigForm() {
 						}}
 					/>
 				</Col>
-				<Col>
+				<Col md="3" className='px-4'>
 					<Form.Label className="text-white">Amount of Segments</Form.Label>
 					<Form.Control
+            className='form-control-sm'
 						type="number"
 						value={segmentsAmount}
 						onChange={(event) => {

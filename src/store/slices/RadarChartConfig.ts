@@ -38,7 +38,7 @@ export const chartConfig = createSlice({
 	reducers: {
 		incrementAxes: (state: ChartConfigState) => {
 			state.axes = JSON.parse(JSON.stringify(state.axes));
-			state.axes.push(defaultAxis());
+			state.axes.push(defaultAxis(state.axes[0].ticks.length));
 		},
 		decrementAxes: (state: ChartConfigState) => {
 			state.axes = state.axes.slice(0, -1);
@@ -82,13 +82,13 @@ function initDefaultAxes(): Axis[] {
 	return defaultAxes;
 }
 
-function defaultAxis(): Axis {
+function defaultAxis(amountSegments: number = 5): Axis {
 	const axis: Axis = {
 		label: '',
 		ticks: []
 	};
 
-	for (let i = 0; i < 5; i++) {
+	for (let i = 0; i < amountSegments; i++) {
 		axis.ticks.push(defaultTick());
 	}
 

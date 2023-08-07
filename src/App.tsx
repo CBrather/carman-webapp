@@ -10,10 +10,10 @@ function App() {
 	return (
 		<Container fluid>
 			<Row>
-				<Col>
+				<Col md="6">
 					<RadarChart />
 				</Col>
-				<Col>
+				<Col md="6">
 					<ChartConfigForm />
 				</Col>
 			</Row>

@@ -5,6 +5,7 @@ export function TickInput(props: { index: number; onInputChange: (index: number,
 	return (
 		<ListGroup.Item>
 			<Form.Control
+      className='form-control-sm'
 				type="text"
 				onChange={(event) => {
 					props.onInputChange(props.index, event.target.value);
