@@ -1,5 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Axis, AxisTick } from '../types/RadarChartTypes';
+import { Axis, AxisTick, Coordinate2D } from '../types/RadarChartTypes';
 
 const SLICE_NAME = 'chartConfig';
 
@@ -38,7 +38,7 @@ export const chartConfig = createSlice({
 	reducers: {
 		incrementAxes: (state: ChartConfigState) => {
 			state.axes = JSON.parse(JSON.stringify(state.axes));
-			state.axes.push(defaultAxis(state.axes[0].ticks.length));
+			state.axes.push(newAxis(`Axis #${state.axes.length+1}`, state.axes[0].ticks.length));
 		},
 		decrementAxes: (state: ChartConfigState) => {
 			state.axes = state.axes.slice(0, -1);
@@ -47,7 +47,7 @@ export const chartConfig = createSlice({
 			const updatedAxes = JSON.parse(JSON.stringify(state.axes));
 
 			for (const axis of updatedAxes) {
-				axis.ticks = [...axis.ticks, defaultTick()];
+				axis.ticks = [...axis.ticks, newTick(`Tick #${axis.ticks.length+1}`)];
 			}
 
 			state.axes = updatedAxes;
@@ -76,32 +76,29 @@ function initDefaultAxes(): Axis[] {
 	const defaultAxes: Axis[] = [];
 
 	for (let i = 0; i < 5; i++) {
-		defaultAxes.push(defaultAxis());
+		defaultAxes.push(newAxis(`Axis #${i+1}`, 5));
 	}
 
 	return defaultAxes;
 }
 
-function defaultAxis(amountSegments: number = 5): Axis {
+function newAxis(label: string, amountSegments: number = 5): Axis {
 	const axis: Axis = {
-		label: '',
+		label,
 		ticks: []
 	};
 
 	for (let i = 0; i < amountSegments; i++) {
-		axis.ticks.push(defaultTick());
+		axis.ticks.push(newTick(`Tick #${i+1}`));
 	}
 
 	return axis;
 }
 
-function defaultTick(): AxisTick {
+function newTick(label: string, location: Coordinate2D = {x: 0, y:0}): AxisTick {
 	const tick: AxisTick = {
-		label: '',
-		location: {
-			x: 0,
-			y: 0
-		}
+		label,
+		location
 	};
 
 	return tick;
