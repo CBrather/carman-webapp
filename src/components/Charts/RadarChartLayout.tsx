@@ -1,58 +1,58 @@
+import './RadarChart.css';
+
+import { useSelector } from 'react-redux';
+import { EdgeStyle, selectChartConfig } from '../../store/slices/RadarChartConfig';
 import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
+import { useEffect, useState } from 'react';
 
-export type RadarChartLayoutOptions = {
-	height?: number;
-	width?: number;
-	startingAngle?: number;
-};
+export default function RadarChartLayout() {
+	const width = 750;
+	const height = 750;
+	const center: Coordinate2D = { x: width / 2, y: height / 2 };
+	const radius = Math.min(width, height) * 0.45;
 
-export default class RadarChartLayout {
-	width = 750;
-	height = 750;
-	sections = 5;
-	startingAngle = 0;
-	angleInterval: number;
-	center: Coordinate2D;
-	radius: number;
+	const chartConfig = useSelector(selectChartConfig);
+	const [axes, setAxes] = useState<Axis[]>(chartConfig.axes);
+	const [radialEdges, setRadialEdges] = useState<Coordinate2D[][]>([]);
 
-	private axes: Axis[] = [];
-	private radialEdges: Coordinate2D[][] = [];
+	const [axesPathElements, setAxesPathsElements] = useState<React.JSX.Element[]>();
+	const [radialPathElements, setRadialPathElements] = useState<React.JSX.Element[]>();
 
-	constructor(axes: Axis[], opts?: RadarChartLayoutOptions) {
-		if (axes.length == 0) throw Error('No axes provided to RadarChart on initialization');
+	useEffect(() => {
+		calculateAxes();
 
-		this.width = opts?.width ? opts.width : this.width;
-		this.height = opts?.height ? opts.height : this.height;
-		this.startingAngle = opts?.startingAngle ? opts.startingAngle : this.startingAngle;
+		setAxesPathsElements(getAxesPathElements());
+		setRadialPathElements(getRadialEdgesPathElements());
+	}, [chartConfig]);
 
-		this.center = { x: this.width / 2, y: this.height / 2 };
-		this.radius = Math.min(this.width, this.height) * 0.45;
+	useEffect(() => {
+		calculateRadialEdges();
+		setAxesPathsElements(getAxesPathElements());
+	}, [axes]);
 
-		this.sections = axes[0]?.ticks.length ?? 1;
-		this.angleInterval = 360 / axes.length;
+	useEffect(() => {
+		setRadialPathElements(getRadialEdgesPathElements());
+	}, [radialEdges]);
 
-		this.calculateAxes(JSON.parse(JSON.stringify(axes)));
-	}
+	function calculateAxes() {
+		const angleInterval = 360 / chartConfig.axes.length;
 
-	calculateAxes = (axes: Axis[]): void => {
-		this.axes = axes.map((axis, i): Axis => {
-			return this.calculateAxisTicks(axis, this.startingAngle + i * this.angleInterval);
+		const calculatedAxes = chartConfig.axes.map((axis, i): Axis => {
+			return calculateAxisTicks(axis, chartConfig.startingAngle + i * angleInterval);
 		});
 
-		this.calculateRadialEdges();
-	};
+		setAxes(calculatedAxes);
+	}
 
-	recalculateAxes = (): void => {
-		this.calculateAxes(this.axes);
-	};
-
-	calculateAxisTicks = (axis: Axis, angle: number): Axis => {
-		const points: Coordinate2D[] = [this.center];
-		const pointInterval = this.radius / this.sections;
+	function calculateAxisTicks(inputAxis: Axis, angle: number): Axis {
 		const angleRad = degrees2Radians(angle);
 
-		let previousPoint = points[0];
-		for (const tick of axis.ticks) {
+		const outputAxis: Axis = JSON.parse(JSON.stringify(inputAxis));
+		outputAxis.ticks.push({ label: '', location: { x: 0, y: 0 } });
+		const pointInterval = radius / outputAxis.ticks.length;
+
+		let previousPoint = center;
+		for (const tick of outputAxis.ticks) {
 			const nextPoint: Coordinate2D = {
 				x: previousPoint.x + pointInterval * Math.cos(angleRad),
 				y: previousPoint.y + pointInterval * Math.sin(angleRad)
@@ -62,48 +62,57 @@ export default class RadarChartLayout {
 			previousPoint = nextPoint;
 		}
 
-		return axis;
-	};
+		return outputAxis;
+	}
 
-	calculateRadialEdges = (): void => {
-		this.radialEdges = [];
+	function calculateRadialEdges() {
+		const radialEdges: Coordinate2D[][] = [];
+		const numEdges = axes[0]?.ticks.length ?? 1;
 
-		for (let i = 0; i < this.sections; i++) {
-			const sectionPoints = this.axes.map((axis) => axis.ticks[i].location);
-			this.radialEdges.push(sectionPoints);
+		for (let i = 0; i < numEdges; i++) {
+			const sectionPoints = axes.map((axis) => axis.ticks[i].location);
+			radialEdges.push(sectionPoints);
 		}
-	};
 
-	getAxesPathElements = (): React.JSX.Element[] => {
+		setRadialEdges(radialEdges);
+	}
+
+	function getAxesPathElements(): React.JSX.Element[] {
 		const axesPaths: React.JSX.Element[] = [];
 
-		for (let i = 0; i < this.axes.length; i++) {
-			const axisPath = this.getAxisPath(this.axes[i]);
-			axesPaths.push(<path d={axisPath} key={this.axes[i].label + i} />);
+		for (let i = 0; i < axes.length; i++) {
+			const axisPath = getAxisPath(axes[i]);
+			axesPaths.push(<path d={axisPath} key={axes[i].label + i} />);
 		}
 
 		return axesPaths;
-	};
+	}
 
-	getAxisPath = (axis: Axis): string => {
+	function getAxisPath(axis: Axis): string {
 		const pathPoints = axis.ticks.map((tick) => tick.location);
 
-		return this.buildSvgPath([this.center, ...pathPoints]);
-	};
+		return buildSvgPath([center, ...pathPoints]);
+	}
 
-	getRadialEdgesPathElements = (): React.JSX.Element[] => {
+	function getRadialEdgesPathElements(): React.JSX.Element[] {
 		const edgePaths: React.JSX.Element[] = [];
 
-		for (let i = 0; i < this.radialEdges.length; i++) {
-			const edgePoints = this.radialEdges[i];
-			const path = this.buildSvgPath(edgePoints, true);
-			edgePaths.push(<path d={path} key={i} />);
+		if (radialEdges.length === 0) return edgePaths;
+
+		for (let i = 0; i < radialEdges.length - 1; i++) {
+			const edgePoints = radialEdges[i];
+			const path = buildSvgPath(edgePoints, true);
+			edgePaths.push(<path strokeDasharray={chartConfig.radialEdgesStyle == EdgeStyle.Dashed ? 5 : 0} d={path} key={'radial-edge-' + i} />);
 		}
 
-		return edgePaths;
-	};
+		const outerEdgePoints = radialEdges.slice(-1)[0];
+		const outerPath = buildSvgPath(outerEdgePoints, true);
+		edgePaths.push(<path d={outerPath} key="outerEdge" />);
 
-	buildSvgPath = (pathPoints: Coordinate2D[], close: boolean = false): string => {
+		return edgePaths;
+	}
+
+	function buildSvgPath(pathPoints: Coordinate2D[], close: boolean = false): string {
 		let path = `
     M${pathPoints[0].x} ${pathPoints[0].y} 
     ${pathPoints
@@ -118,7 +127,22 @@ export default class RadarChartLayout {
 		if (close) path += ` L${pathPoints[0].x} ${pathPoints[0].y}`;
 
 		return path;
-	};
+	}
+
+	return (
+		<div
+			className="LineChart"
+			style={{
+				width: width + 'px',
+				height: height + 'px'
+			}}
+		>
+			<svg width={width} height={height}>
+				{axesPathElements}
+				{radialPathElements}
+			</svg>
+		</div>
+	);
 }
 
 function degrees2Radians(degrees: number): number {

@@ -3,14 +3,25 @@ import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from 'react';
 import { AxisConfigForm } from './AxisConfigForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { decrementAxes, decrementSegments, incrementAxes, incrementSegments, selectAxes } from '../../store/slices/RadarChartConfig';
+import {
+	EdgeStyle,
+	decrementAxes,
+	decrementSegments,
+	incrementAxes,
+	incrementSegments,
+	selectAxes,
+	selectRadialEdgesStyle,
+	updateRadialEdgesStyle
+} from '../../store/slices/RadarChartConfig';
 
 export function ChartConfigForm() {
 	const dispatch = useDispatch();
 	const axes = useSelector(selectAxes);
+	const radialEdgesStyle = useSelector(selectRadialEdgesStyle);
 	const [axesAmount, setAxesAmount] = useState(axes.length);
 	const [segmentsAmount, setSegmentsAmount] = useState(axes[0].ticks.length);
 	const [axesConfigForms, setAxesConfigForms] = useState<React.JSX.Element[]>();
+	const [radialEdgeStyleOpts, setRadialEdgeStyleOpts] = useState<React.JSX.Element[]>();
 
 	useEffect(() => {
 		if (axesAmount === axes.length) return;
@@ -43,13 +54,27 @@ export function ChartConfigForm() {
 		setAxesConfigForms(updatedAxesConfigForms);
 	}, [axes]);
 
+	useEffect(() => {
+		const styleOptions = Object.keys(EdgeStyle)
+			.filter((key) => isNaN(Number(key)))
+			.map((key) => {
+				return (
+					<option value={EdgeStyle[key as keyof typeof EdgeStyle]} key={key}>
+						{key}
+					</option>
+				);
+			});
+
+		setRadialEdgeStyleOpts(styleOptions);
+	}, [radialEdgesStyle]);
+
 	return (
 		<Form>
 			<Row>
-				<Col md="3" className='px-4'>
+				<Col md="3" className="px-4">
 					<Form.Label className="text-white">Amount of Axes</Form.Label>
 					<Form.Control
-            className='form-control-sm'
+						className="form-control-sm"
 						type="number"
 						value={axesAmount}
 						onChange={(event) => {
@@ -58,10 +83,10 @@ export function ChartConfigForm() {
 						}}
 					/>
 				</Col>
-				<Col md="3" className='px-4'>
+				<Col md="3" className="px-4">
 					<Form.Label className="text-white">Amount of Segments</Form.Label>
 					<Form.Control
-            className='form-control-sm'
+						className="form-control-sm"
 						type="number"
 						value={segmentsAmount}
 						onChange={(event) => {
@@ -69,6 +94,18 @@ export function ChartConfigForm() {
 							setSegmentsAmount(newValue);
 						}}
 					/>
+				</Col>
+				<Col md="3" className="px-4">
+					<Form.Label className="text-white">Radial Edges Style</Form.Label>
+					<Form.Select
+						size="sm"
+						onChange={(event) => {
+							const newValue = event.currentTarget.value as EdgeStyle;
+							dispatch(updateRadialEdgesStyle({ edgeStyle: newValue }));
+						}}
+					>
+						{radialEdgeStyleOpts}
+					</Form.Select>
 				</Col>
 			</Row>
 			<Row>
