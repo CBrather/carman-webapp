@@ -3,15 +3,15 @@ import './App.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import RadarChart from './components/Charts/RadarChart';
 import { ChartConfigForm } from './components/Forms/ChartConfigForm';
+import RadarChartLayout from './components/Charts/RadarChartLayout';
 
 function App() {
 	return (
 		<Container fluid>
 			<Row>
 				<Col md="6">
-					<RadarChart />
+					<RadarChartLayout />
 				</Col>
 				<Col md="6">
 					<ChartConfigForm />

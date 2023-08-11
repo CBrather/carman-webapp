@@ -3,26 +3,26 @@ import { ListGroup } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { AxisTick } from '../../../store/types/RadarChartTypes';
 
-export function TickInput(props: { index: number; tick: AxisTick, onInputChange: (index: number, label: string) => void }) {
-  const [label, setLabel] = useState(props.tick.label);
+export function TickInput(props: { index: number; tick: AxisTick; onInputChange: (index: number, label: string) => void }) {
+	const [label, setLabel] = useState(props.tick.label);
 
 	return (
 		<ListGroup.Item>
 			<Form.Control
-        className='form-control-sm'
+				className="form-control-sm"
 				type="text"
-        value={label}
+				value={label}
 				onChange={(event) => {
-          setLabel(event.target.value)
+					setLabel(event.target.value);
 				}}
-        onBlur={_ => {
-          props.onInputChange(props.index, label)
-        }}
-        onKeyDown={(event) => {
-          if(event.key === 'Enter') {
-            props.onInputChange(props.index, label);
-          }
-        }}
+				onBlur={() => {
+					props.onInputChange(props.index, label);
+				}}
+				onKeyDown={(event) => {
+					if (event.key === 'Enter') {
+						props.onInputChange(props.index, label);
+					}
+				}}
 			/>
 		</ListGroup.Item>
 	);

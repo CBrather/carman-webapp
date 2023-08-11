@@ -3,14 +3,21 @@ import { Axis, AxisTick, Coordinate2D } from '../types/RadarChartTypes';
 
 const SLICE_NAME = 'chartConfig';
 
+export enum EdgeStyle {
+	Solid = 'solid',
+	Dashed = 'dashed'
+}
+
 type ChartConfigState = {
-	startingAngle: number;
 	axes: Axis[];
+	radialEdgesStyle: EdgeStyle;
+	startingAngle: number;
 };
 
 const initialState: ChartConfigState = {
-	startingAngle: 0,
-	axes: initDefaultAxes()
+	axes: initDefaultAxes(),
+	radialEdgesStyle: EdgeStyle.Solid,
+	startingAngle: 0
 };
 
 /*
@@ -28,6 +35,7 @@ export const selectAxisByIndex = createSelector(
 	[pickChartConfigState, (_: StateWithChartConfig, index: number) => index],
 	(chartConfig: ChartConfigState, index: number) => chartConfig.axes[index]
 );
+export const selectRadialEdgesStyle = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.radialEdgesStyle);
 
 /*
  ** Slice Setup
@@ -38,7 +46,7 @@ export const chartConfig = createSlice({
 	reducers: {
 		incrementAxes: (state: ChartConfigState) => {
 			state.axes = JSON.parse(JSON.stringify(state.axes));
-			state.axes.push(newAxis(`Axis #${state.axes.length+1}`, state.axes[0].ticks.length));
+			state.axes.push(newAxis(`Axis #${state.axes.length + 1}`, state.axes[0].ticks.length));
 		},
 		decrementAxes: (state: ChartConfigState) => {
 			state.axes = state.axes.slice(0, -1);
@@ -47,7 +55,7 @@ export const chartConfig = createSlice({
 			const updatedAxes = JSON.parse(JSON.stringify(state.axes));
 
 			for (const axis of updatedAxes) {
-				axis.ticks = [...axis.ticks, newTick(`Tick #${axis.ticks.length+1}`)];
+				axis.ticks = [...axis.ticks, newTick(`Tick #${axis.ticks.length + 1}`)];
 			}
 
 			state.axes = updatedAxes;
@@ -63,11 +71,14 @@ export const chartConfig = createSlice({
 		},
 		updateAxis: (state: ChartConfigState, action: PayloadAction<{ index: number; axis: Axis }>) => {
 			state.axes[action.payload.index] = action.payload.axis;
+		},
+		updateRadialEdgesStyle: (state: ChartConfigState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
+			state.radialEdgesStyle = action.payload.edgeStyle;
 		}
 	}
 });
 
-export const { incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxis } = chartConfig.actions;
+export const { incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxis, updateRadialEdgesStyle } = chartConfig.actions;
 
 /*
  ** Helper
@@ -76,7 +87,7 @@ function initDefaultAxes(): Axis[] {
 	const defaultAxes: Axis[] = [];
 
 	for (let i = 0; i < 5; i++) {
-		defaultAxes.push(newAxis(`Axis #${i+1}`, 5));
+		defaultAxes.push(newAxis(`Axis #${i + 1}`, 5));
 	}
 
 	return defaultAxes;
@@ -89,13 +100,13 @@ function newAxis(label: string, amountSegments: number = 5): Axis {
 	};
 
 	for (let i = 0; i < amountSegments; i++) {
-		axis.ticks.push(newTick(`Tick #${i+1}`));
+		axis.ticks.push(newTick(`Tick #${i + 1}`));
 	}
 
 	return axis;
 }
 
-function newTick(label: string, location: Coordinate2D = {x: 0, y:0}): AxisTick {
+function newTick(label: string, location: Coordinate2D = { x: 0, y: 0 }): AxisTick {
 	const tick: AxisTick = {
 		label,
 		location
