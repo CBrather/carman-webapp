@@ -1,29 +1,24 @@
 import { useState } from 'react';
-import { ListGroup } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
 import { AxisTick } from '../../../store/types/RadarChartTypes';
+import { Input } from 'antd'
 
 export function TickInput(props: { index: number; tick: AxisTick; onInputChange: (index: number, label: string) => void }) {
 	const [label, setLabel] = useState(props.tick.label);
 
 	return (
-		<ListGroup.Item>
-			<Form.Control
-				className="form-control-sm"
-				type="text"
+			<Input
 				value={label}
-				onChange={(event) => {
+				onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
 					setLabel(event.target.value);
 				}}
 				onBlur={() => {
 					props.onInputChange(props.index, label);
 				}}
-				onKeyDown={(event) => {
+				onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
 					if (event.key === 'Enter') {
 						props.onInputChange(props.index, label);
 					}
 				}}
 			/>
-		</ListGroup.Item>
 	);
 }
