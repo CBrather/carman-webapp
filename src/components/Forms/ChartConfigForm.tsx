@@ -69,16 +69,16 @@ export function ChartConfigForm() {
         <InputNumber
           addonBefore="Axes"
           value={axesAmount}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            const newValue: number = Number(event.currentTarget.value) <= 0 ? 1 : Number(event.target.value);
+          onChange={(value: number) => {
+            const newValue: number = value <= 0 ? 1 : value;
             setAxesAmount(newValue);
           }}
         />
         <InputNumber
           addonBefore="Segments"
           value={segmentsAmount}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            const newValue: number = Number(event.currentTarget.value) <= 0 ? 1 : Number(event.target.value);
+          onChange={(value: number) => {
+            const newValue: number = value <= 0 ? 1 : value;
             setSegmentsAmount(newValue);
           }}
         />
