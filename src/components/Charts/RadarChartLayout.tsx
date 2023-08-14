@@ -1,9 +1,10 @@
 import './RadarChart.css';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { EdgeStyle, selectChartConfig } from '../../store/slices/RadarChartConfig';
 import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
 import { useEffect, useState } from 'react';
+import { axisSelected } from '../../store/slices/RadarChartConfig'
 
 export default function RadarChartLayout() {
 	const width = 750;
@@ -17,6 +18,8 @@ export default function RadarChartLayout() {
 
 	const [axesPathElements, setAxesPathsElements] = useState<React.JSX.Element[]>();
 	const [radialPathElements, setRadialPathElements] = useState<React.JSX.Element[]>();
+
+  const dispatch = useDispatch();
 
 	useEffect(() => {
 		calculateAxes();
@@ -82,7 +85,11 @@ export default function RadarChartLayout() {
 
 		for (let i = 0; i < axes.length; i++) {
 			const axisPath = getAxisPath(axes[i]);
-			axesPaths.push(<path d={axisPath} key={axes[i].label + i} />);
+			axesPaths.push(<path
+        className="radar-axis"
+        d={axisPath}
+        key={axes[i].label + i}
+        onClick={() => dispatch(axisSelected(i))} />);
 		}
 
 		return axesPaths;
@@ -102,7 +109,11 @@ export default function RadarChartLayout() {
 		for (let i = 0; i < radialEdges.length - 1; i++) {
 			const edgePoints = radialEdges[i];
 			const path = buildSvgPath(edgePoints, true);
-			edgePaths.push(<path strokeDasharray={chartConfig.radialEdgesStyle == EdgeStyle.Dashed ? 5 : 0} d={path} key={'radial-edge-' + i} />);
+			edgePaths.push(<path
+        strokeDasharray={chartConfig.radialEdgesStyle == EdgeStyle.Dashed ? 5 : 0}
+        d={path}
+        key={'radial-edge-' + i}
+      />);
 		}
 
 		const outerEdgePoints = radialEdges.slice(-1)[0];

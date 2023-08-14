@@ -11,12 +11,14 @@ export enum EdgeStyle {
 type ChartConfigState = {
 	axes: Axis[];
 	radialEdgesStyle: EdgeStyle;
+  selectedAxis: number;
 	startingAngle: number;
 };
 
 const initialState: ChartConfigState = {
 	axes: initDefaultAxes(),
 	radialEdgesStyle: EdgeStyle.Solid,
+  selectedAxis: 0,
 	startingAngle: 0
 };
 
@@ -36,6 +38,12 @@ export const selectAxisByIndex = createSelector(
 	(chartConfig: ChartConfigState, index: number) => chartConfig.axes[index]
 );
 export const selectRadialEdgesStyle = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.radialEdgesStyle);
+export const selectSelectedAxis = createSelector(
+  [pickChartConfigState],
+  (chartConfig: ChartConfigState) => {
+    return { axis: chartConfig.axes[chartConfig.selectedAxis], index: chartConfig.selectedAxis}
+  });
+
 
 /*
  ** Slice Setup
@@ -44,6 +52,9 @@ export const chartConfig = createSlice({
 	name: SLICE_NAME,
 	initialState,
 	reducers: {
+    axisSelected: (state: ChartConfigState, action: PayloadAction<number>) => {
+      if (action.payload < state.axes.length) state.selectedAxis = action.payload;
+    },
 		incrementAxes: (state: ChartConfigState) => {
 			state.axes = JSON.parse(JSON.stringify(state.axes));
 			state.axes.push(newAxis(`Axis #${state.axes.length + 1}`, state.axes[0].ticks.length));
@@ -78,7 +89,7 @@ export const chartConfig = createSlice({
 	}
 });
 
-export const { incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxis, updateRadialEdgesStyle } = chartConfig.actions;
+export const { axisSelected, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxis, updateRadialEdgesStyle } = chartConfig.actions;
 
 /*
  ** Helper

@@ -10,6 +10,7 @@ import {
 	incrementSegments,
 	selectAxes,
 	selectRadialEdgesStyle,
+	selectSelectedAxis,
 	updateRadialEdgesStyle
 } from '../../store/slices/RadarChartConfig';
 
@@ -17,9 +18,9 @@ export function ChartConfigForm() {
 	const dispatch = useDispatch();
 	const axes = useSelector(selectAxes);
 	const radialEdgesStyle = useSelector(selectRadialEdgesStyle);
+  const selectedAxis = useSelector(selectSelectedAxis)
 	const [axesAmount, setAxesAmount] = useState(axes.length);
-	const [segmentsAmount, setSegmentsAmount] = useState(axes[0].ticks.length);
-	const [axesConfigForms, setAxesConfigForms] = useState<React.JSX.Element[]>();
+	const [segmentsAmount, setSegmentsAmount] = useState(selectedAxis.axis.ticks.length);
 	const [radialEdgeStyleOpts, setRadialEdgeStyleOpts] = useState<{label: string, value: string}[]>();
 
 	useEffect(() => {
@@ -43,15 +44,6 @@ export function ChartConfigForm() {
 
 		dispatch(incrementSegments());
 	}, [segmentsAmount]);
-
-	useEffect(() => {
-		const updatedAxesConfigForms: React.JSX.Element[] = [];
-		for (let i = 0; i < axes.length; i++) {
-			updatedAxesConfigForms.push(<AxisConfigForm index={i} axis={axes[i]} key={axes[i].label + i} />);
-		}
-
-		setAxesConfigForms(updatedAxesConfigForms);
-	}, [axes]);
 
 	useEffect(() => {
 		const styleOptions = Object.keys(EdgeStyle)
@@ -91,7 +83,7 @@ export function ChartConfigForm() {
         />
         </Space>
 			<Space direction="vertical">
-				{axesConfigForms}
+        <AxisConfigForm />
       </Space>
     </Space>
 	);
