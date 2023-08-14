@@ -52,8 +52,14 @@ export const chartConfig = createSlice({
 	name: SLICE_NAME,
 	initialState,
 	reducers: {
+    axisLabelChanged: (state: ChartConfigState, action: PayloadAction<{index: number, label: string}>) => {
+      state.axes[action.payload.index].label = action.payload.label;
+    },
     axisSelected: (state: ChartConfigState, action: PayloadAction<number>) => {
       if (action.payload < state.axes.length) state.selectedAxis = action.payload;
+    },
+    axisTickLabelChanged: (state: ChartConfigState, action: PayloadAction<{axisIndex: number, tickIndex: number, label: string}>) => {
+      state.axes[action.payload.axisIndex].ticks[action.payload.tickIndex].label = action.payload.label;
     },
 		incrementAxes: (state: ChartConfigState) => {
 			state.axes = JSON.parse(JSON.stringify(state.axes));
@@ -80,16 +86,13 @@ export const chartConfig = createSlice({
 
 			state.axes = updatedAxes;
 		},
-		updateAxis: (state: ChartConfigState, action: PayloadAction<{ index: number; axis: Axis }>) => {
-			state.axes[action.payload.index] = action.payload.axis;
-		},
 		updateRadialEdgesStyle: (state: ChartConfigState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
 			state.radialEdgesStyle = action.payload.edgeStyle;
 		}
 	}
 });
 
-export const { axisSelected, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxis, updateRadialEdgesStyle } = chartConfig.actions;
+export const { axisLabelChanged, axisSelected, axisTickLabelChanged, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateRadialEdgesStyle } = chartConfig.actions;
 
 /*
  ** Helper
