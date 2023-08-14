@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TickInput } from './Inputs/TickInput';
-import { Axis } from '../../store/types/RadarChartTypes';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedAxis, updateAxis } from '../../store/slices/RadarChartConfig';
+import { selectSelectedAxis, axisTickLabelChanged, axisLabelChanged } from '../../store/slices/RadarChartConfig';
 import { Input, Space } from 'antd'
 
 export function AxisConfigForm() {
@@ -13,10 +12,7 @@ export function AxisConfigForm() {
 	const [label, setLabel] = useState(selectedAxis.axis.label);
 
 	const onInputChange = (index: number, label: string): void => {
-		const axis: Axis = JSON.parse(JSON.stringify(selectedAxis.axis));
-		axis.ticks[index].label = label;
-
-		dispatch(updateAxis({ index: selectedAxis.index, axis }));
+		dispatch(axisTickLabelChanged({ axisIndex: selectedAxis.index, tickIndex: index, label }));
 	};
 
 	useEffect(() => {
@@ -42,9 +38,7 @@ export function AxisConfigForm() {
           }}
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
             if (event.key === 'Enter' || event.key === 'Tab') {
-              const axis: Axis = JSON.parse(JSON.stringify(selectedAxis.axis));
-              axis.label = label;
-              dispatch(updateAxis({ index: selectedAxis.index, axis }));
+              dispatch(axisLabelChanged({ index: selectedAxis.index, label }));
             }
           }}
         />
