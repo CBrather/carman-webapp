@@ -86,6 +86,7 @@ export default function RadarChartLayout() {
 		for (let i = 0; i < axes.length; i++) {
 			const axisPath = getAxisPath(axes[i]);
 			axesPaths.push(<path
+        strokeDasharray={chartConfig.axesEdgesStyle == EdgeStyle.Dashed ? 5 : 0}
         className="radar-axis"
         d={axisPath}
         key={axes[i].label + i}

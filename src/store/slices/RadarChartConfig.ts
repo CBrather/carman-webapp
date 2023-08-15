@@ -10,6 +10,7 @@ export enum EdgeStyle {
 
 type ChartConfigState = {
 	axes: Axis[];
+  axesEdgesStyle: EdgeStyle;
 	radialEdgesStyle: EdgeStyle;
   selectedAxis: number;
 	startingAngle: number;
@@ -17,6 +18,7 @@ type ChartConfigState = {
 
 const initialState: ChartConfigState = {
 	axes: initDefaultAxes(),
+  axesEdgesStyle: EdgeStyle.Solid,
 	radialEdgesStyle: EdgeStyle.Solid,
   selectedAxis: 0,
 	startingAngle: 0
@@ -37,6 +39,7 @@ export const selectAxisByIndex = createSelector(
 	[pickChartConfigState, (_: StateWithChartConfig, index: number) => index],
 	(chartConfig: ChartConfigState, index: number) => chartConfig.axes[index]
 );
+export const selectAxesEdgesStyle = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.axesEdgesStyle);
 export const selectRadialEdgesStyle = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.radialEdgesStyle);
 export const selectSelectedAxis = createSelector(
   [pickChartConfigState],
@@ -86,13 +89,16 @@ export const chartConfig = createSlice({
 
 			state.axes = updatedAxes;
 		},
+    updateAxesEdgesStyle: (state: ChartConfigState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
+			state.axesEdgesStyle = action.payload.edgeStyle;
+		},
 		updateRadialEdgesStyle: (state: ChartConfigState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
 			state.radialEdgesStyle = action.payload.edgeStyle;
 		}
 	}
 });
 
-export const { axisLabelChanged, axisSelected, axisTickLabelChanged, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateRadialEdgesStyle } = chartConfig.actions;
+export const { axisLabelChanged, axisSelected, axisTickLabelChanged, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxesEdgesStyle, updateRadialEdgesStyle } = chartConfig.actions;
 
 /*
  ** Helper
