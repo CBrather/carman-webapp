@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { AxisConfigForm } from './AxisConfigForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { InputNumber, Select, Space } from 'antd'
+import { InputNumber, Space, Radio, Typography } from 'antd'
 import {
 	EdgeStyle,
 	decrementAxes,
@@ -9,19 +9,23 @@ import {
 	incrementAxes,
 	incrementSegments,
 	selectAxes,
+	selectAxesEdgesStyle,
 	selectRadialEdgesStyle,
 	selectSelectedAxis,
+	updateAxesEdgesStyle,
 	updateRadialEdgesStyle
 } from '../../store/slices/RadarChartConfig';
 
 export function ChartConfigForm() {
 	const dispatch = useDispatch();
 	const axes = useSelector(selectAxes);
+  const axesEdgesStyle = useSelector(selectAxesEdgesStyle);
 	const radialEdgesStyle = useSelector(selectRadialEdgesStyle);
   const selectedAxis = useSelector(selectSelectedAxis)
 	const [axesAmount, setAxesAmount] = useState(axes.length);
 	const [segmentsAmount, setSegmentsAmount] = useState(selectedAxis.axis.ticks.length);
-	const [radialEdgeStyleOpts, setRadialEdgeStyleOpts] = useState<{label: string, value: string}[]>();
+	const [axesEdgeStyleOpts, setAxesEdgeStyleOpts] = useState<React.JSX.Element[]>([]);
+	const [radialEdgeStyleOpts, setRadialEdgeStyleOpts] = useState<React.JSX.Element[]>([]);
 
 	useEffect(() => {
 		if (axesAmount === axes.length) return;
@@ -49,11 +53,11 @@ export function ChartConfigForm() {
 		const styleOptions = Object.keys(EdgeStyle)
 			.filter((key) => isNaN(Number(key)))
 			.map((key) => {
-				return { label: key, value: EdgeStyle[key as keyof typeof EdgeStyle] as string}
+				return <Radio.Button value={EdgeStyle[key as keyof typeof EdgeStyle]} key={key}>{key}</Radio.Button>
 			});
 
 		setRadialEdgeStyleOpts(styleOptions);
-	}, [radialEdgesStyle]);
+	}, []);
 
 	return (
 			<Space direction="vertical">
@@ -74,14 +78,19 @@ export function ChartConfigForm() {
             setSegmentsAmount(newValue);
           }}
         />
-				<Select
-          value={radialEdgesStyle}
-          onChange={(value) => {;
-            dispatch(updateRadialEdgesStyle({ edgeStyle: value }));
-          }}
-          options={radialEdgeStyleOpts}
-        />
         </Space>
+        <Radio.Group value={axesEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
+            dispatch(updateAxesEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
+          }}>
+          <Typography type="primary">Axes Edges</Typography>
+          {radialEdgeStyleOpts}
+        </Radio.Group>
+        <Radio.Group value={radialEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
+            dispatch(updateRadialEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
+          }}>
+          <Typography type="primary">Radial Edges</Typography>
+          {radialEdgeStyleOpts}
+        </Radio.Group>
 			<Space direction="vertical">
         <AxisConfigForm />
       </Space>
