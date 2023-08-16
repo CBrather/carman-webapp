@@ -1,7 +1,7 @@
 import './RadarChart.css';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { EdgeStyle, selectChartConfig, chartConfig } from '../../store/slices/RadarChartConfig';
+import { EdgeStyle, selectChartConfig } from '../../store/slices/RadarChartConfig';
 import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
 import { useEffect, useState } from 'react';
 import { axisSelected } from '../../store/slices/RadarChartConfig'
@@ -88,6 +88,7 @@ export default function RadarChartLayout() {
 			axesPaths.push(<path
         strokeDasharray={chartConfig.axesEdgesStyle == EdgeStyle.Dashed ? 5 : 0}
         stroke={chartConfig.axesColor}
+        strokeWidth={chartConfig.axesThickness}
         className="radar-axis"
         d={axisPath}
         key={axes[i].label + i}
@@ -114,6 +115,7 @@ export default function RadarChartLayout() {
 			edgePaths.push(<path
         strokeDasharray={chartConfig.radialEdgesStyle == EdgeStyle.Dashed ? 5 : 0}
         stroke={chartConfig.radialEdgesColor}
+        strokeWidth={chartConfig.radialEdgesThickness}
         d={path}
         key={'radial-edge-' + i}
       />);
@@ -124,6 +126,7 @@ export default function RadarChartLayout() {
 		edgePaths.push(<path
       strokeDasharray={chartConfig.outerEdgeStyle == EdgeStyle.Dashed ? 5 : 0}
       stroke={chartConfig.outerEdgeColor}
+      strokeWidth={chartConfig.outerEdgeThickness}
       d={outerPath}
       key="outerEdge" />);
 

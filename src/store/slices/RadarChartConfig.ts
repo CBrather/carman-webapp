@@ -12,10 +12,13 @@ type ChartConfigState = {
 	axes: Axis[];
   axesColor: string;
   axesEdgesStyle: EdgeStyle;
+  axesThickness: number;
   outerEdgeColor: string;
   outerEdgeStyle: EdgeStyle;
+  outerEdgeThickness: number;
   radialEdgesColor: string;
 	radialEdgesStyle: EdgeStyle;
+  radialEdgesThickness: number;
   selectedAxis: number;
 	startingAngle: number;
 };
@@ -24,10 +27,13 @@ const initialState: ChartConfigState = {
 	axes: initDefaultAxes(),
   axesColor: '#838383',
   axesEdgesStyle: EdgeStyle.Solid,
+  axesThickness: 1,
   outerEdgeColor: '#838383',
   outerEdgeStyle: EdgeStyle.Solid,
+  outerEdgeThickness: 1,
   radialEdgesColor: '#838383',
 	radialEdgesStyle: EdgeStyle.Solid,
+  radialEdgesThickness: 1,
   selectedAxis: 0,
 	startingAngle: 0
 };
@@ -53,6 +59,9 @@ export const selectRadialEdgesStyle = createSelector([pickChartConfigState], (ch
 export const selectAxesColor = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.axesColor);
 export const selectOuterEdgeColor = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.outerEdgeColor);
 export const selectRadialEdgesColor = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.radialEdgesColor);
+export const selectAxesThickness = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.axesThickness);
+export const selectOuterEdgeThickness = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.outerEdgeThickness);
+export const selectRadialEdgesThickness = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.radialEdgesThickness);
 export const selectSelectedAxis = createSelector(
   [pickChartConfigState],
   (chartConfig: ChartConfigState) => {
@@ -118,11 +127,23 @@ export const chartConfig = createSlice({
     },
     updateRadialEdgesColor: (state: ChartConfigState, action: PayloadAction<{color: string}>) => {
       state.radialEdgesColor = action.payload.color;
+    },
+    updateAxesThickness: (state: ChartConfigState, action: PayloadAction<{thickness: number}>) => {
+      if(action.payload.thickness < 1) return
+      state.axesThickness = action.payload.thickness;
+    },
+    updateOuterEdgeThickness: (state: ChartConfigState, action: PayloadAction<{thickness: number}>) => {
+      if(action.payload.thickness < 1) return
+      state.outerEdgeThickness = action.payload.thickness;
+    },
+    updateRadialEdgesThickness: (state: ChartConfigState, action: PayloadAction<{thickness: number}>) => {
+      if(action.payload.thickness < 1) return
+      state.radialEdgesThickness = action.payload.thickness;
     }
 	}
 });
 
-export const { axisLabelChanged, axisSelected, axisTickLabelChanged, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxesEdgesStyle, updateOuterEdgeStyle, updateRadialEdgesStyle, updateAxesColor, updateOuterEdgeColor, updateRadialEdgesColor } = chartConfig.actions;
+export const { axisLabelChanged, axisSelected, axisTickLabelChanged, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxesEdgesStyle, updateOuterEdgeStyle, updateRadialEdgesStyle, updateAxesColor, updateOuterEdgeColor, updateRadialEdgesColor, updateAxesThickness, updateOuterEdgeThickness, updateRadialEdgesThickness } = chartConfig.actions;
 
 /*
  ** Helper

@@ -11,17 +11,23 @@ import {
 	selectAxes,
 	selectAxesColor,
 	selectAxesEdgesStyle,
+	selectAxesThickness,
 	selectOuterEdgeColor,
 	selectOuterEdgeStyle,
+	selectOuterEdgeThickness,
 	selectRadialEdgesColor,
 	selectRadialEdgesStyle,
+	selectRadialEdgesThickness,
 	selectSelectedAxis,
 	updateAxesColor,
 	updateAxesEdgesStyle,
+	updateAxesThickness,
 	updateOuterEdgeColor,
 	updateOuterEdgeStyle,
+	updateOuterEdgeThickness,
 	updateRadialEdgesColor,
-	updateRadialEdgesStyle
+	updateRadialEdgesStyle,
+  updateRadialEdgesThickness
 } from '../../store/slices/RadarChartConfig';
 import { Color } from 'antd/es/color-picker';
 
@@ -34,6 +40,9 @@ export function ChartConfigForm() {
   const axesColor = useSelector(selectAxesColor);
   const outerEdgeColor = useSelector(selectOuterEdgeColor);
   const radialEdgesColor = useSelector(selectRadialEdgesColor);
+  const axesThickness = useSelector(selectAxesThickness);
+  const outerEdgeThickness = useSelector(selectOuterEdgeThickness);
+  const radialEdgesThickness = useSelector(selectRadialEdgesThickness);
   const selectedAxis = useSelector(selectSelectedAxis)
 	const [axesAmount, setAxesAmount] = useState(axes.length);
 	const [segmentsAmount, setSegmentsAmount] = useState(selectedAxis.axis.ticks.length);
@@ -105,6 +114,13 @@ export function ChartConfigForm() {
               onChangeComplete={(value: Color) => {
                 dispatch(updateAxesColor({color: value.toHexString()}))
               }} />
+            <InputNumber
+              addonBefore="Thickness"
+              value={axesThickness}
+              onChange={(value: number) => {
+                dispatch(updateAxesThickness({thickness: value}));
+              }}
+            />
           </Space>
         </Space>
         <Space direction="vertical">
@@ -121,6 +137,13 @@ export function ChartConfigForm() {
               onChangeComplete={(value: Color) => {
                 dispatch(updateRadialEdgesColor({color: value.toHexString()}))
               }} />
+            <InputNumber
+              addonBefore="Thickness"
+              value={radialEdgesThickness}
+              onChange={(value: number) => {
+                dispatch(updateRadialEdgesThickness({thickness: value}));
+              }}
+            />
           </Space>
         </Space>
         <Space direction="vertical">
@@ -137,6 +160,13 @@ export function ChartConfigForm() {
               onChangeComplete={(value: Color) => {
                 dispatch(updateOuterEdgeColor({color: value.toHexString()}))
               }} />
+            <InputNumber
+              addonBefore="Thickness"
+              value={outerEdgeThickness}
+              onChange={(value: number) => {
+                dispatch(updateOuterEdgeThickness({thickness: value}));
+              }}
+            />
           </Space>
         </Space>
 			<Space direction="vertical">
