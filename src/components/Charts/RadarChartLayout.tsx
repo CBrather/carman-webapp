@@ -119,7 +119,10 @@ export default function RadarChartLayout() {
 
 		const outerEdgePoints = radialEdges.slice(-1)[0];
 		const outerPath = buildSvgPath(outerEdgePoints, true);
-		edgePaths.push(<path d={outerPath} key="outerEdge" />);
+		edgePaths.push(<path
+      strokeDasharray={chartConfig.outerEdgeStyle == EdgeStyle.Dashed ? 5 : 0}
+      d={outerPath}
+      key="outerEdge" />);
 
 		return edgePaths;
 	}

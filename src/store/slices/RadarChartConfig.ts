@@ -11,6 +11,7 @@ export enum EdgeStyle {
 type ChartConfigState = {
 	axes: Axis[];
   axesEdgesStyle: EdgeStyle;
+  outerEdgeStyle: EdgeStyle;
 	radialEdgesStyle: EdgeStyle;
   selectedAxis: number;
 	startingAngle: number;
@@ -19,6 +20,7 @@ type ChartConfigState = {
 const initialState: ChartConfigState = {
 	axes: initDefaultAxes(),
   axesEdgesStyle: EdgeStyle.Solid,
+  outerEdgeStyle: EdgeStyle.Solid,
 	radialEdgesStyle: EdgeStyle.Solid,
   selectedAxis: 0,
 	startingAngle: 0
@@ -40,6 +42,7 @@ export const selectAxisByIndex = createSelector(
 	(chartConfig: ChartConfigState, index: number) => chartConfig.axes[index]
 );
 export const selectAxesEdgesStyle = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.axesEdgesStyle);
+export const selectOuterEdgeStyle = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.outerEdgeStyle);
 export const selectRadialEdgesStyle = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.radialEdgesStyle);
 export const selectSelectedAxis = createSelector(
   [pickChartConfigState],
@@ -92,13 +95,16 @@ export const chartConfig = createSlice({
     updateAxesEdgesStyle: (state: ChartConfigState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
 			state.axesEdgesStyle = action.payload.edgeStyle;
 		},
+    updateOuterEdgeStyle: (state: ChartConfigState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
+			state.outerEdgeStyle = action.payload.edgeStyle;
+		},
 		updateRadialEdgesStyle: (state: ChartConfigState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
 			state.radialEdgesStyle = action.payload.edgeStyle;
 		}
 	}
 });
 
-export const { axisLabelChanged, axisSelected, axisTickLabelChanged, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxesEdgesStyle, updateRadialEdgesStyle } = chartConfig.actions;
+export const { axisLabelChanged, axisSelected, axisTickLabelChanged, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxesEdgesStyle, updateOuterEdgeStyle, updateRadialEdgesStyle } = chartConfig.actions;
 
 /*
  ** Helper
