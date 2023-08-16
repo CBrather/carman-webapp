@@ -92,6 +92,7 @@ export function ChartConfigForm() {
           {radialEdgeStyleOpts}
         </Radio.Group>
 			<Space direction="vertical">
+        <Typography type="primary">Axis</Typography>
         <AxisConfigForm />
       </Space>
     </Space>
