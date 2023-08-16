@@ -10,9 +10,11 @@ import {
 	incrementSegments,
 	selectAxes,
 	selectAxesEdgesStyle,
+	selectOuterEdgeStyle,
 	selectRadialEdgesStyle,
 	selectSelectedAxis,
 	updateAxesEdgesStyle,
+	updateOuterEdgeStyle,
 	updateRadialEdgesStyle
 } from '../../store/slices/RadarChartConfig';
 
@@ -21,11 +23,11 @@ export function ChartConfigForm() {
 	const axes = useSelector(selectAxes);
   const axesEdgesStyle = useSelector(selectAxesEdgesStyle);
 	const radialEdgesStyle = useSelector(selectRadialEdgesStyle);
+	const outerEdgeStyle = useSelector(selectOuterEdgeStyle);
   const selectedAxis = useSelector(selectSelectedAxis)
 	const [axesAmount, setAxesAmount] = useState(axes.length);
 	const [segmentsAmount, setSegmentsAmount] = useState(selectedAxis.axis.ticks.length);
-	const [axesEdgeStyleOpts, setAxesEdgeStyleOpts] = useState<React.JSX.Element[]>([]);
-	const [radialEdgeStyleOpts, setRadialEdgeStyleOpts] = useState<React.JSX.Element[]>([]);
+	const [edgeStyleOpts, setEdgeStyleOpts] = useState<React.JSX.Element[]>([]);
 
 	useEffect(() => {
 		if (axesAmount === axes.length) return;
@@ -56,7 +58,7 @@ export function ChartConfigForm() {
 				return <Radio.Button value={EdgeStyle[key as keyof typeof EdgeStyle]} key={key}>{key}</Radio.Button>
 			});
 
-		setRadialEdgeStyleOpts(styleOptions);
+		setEdgeStyleOpts(styleOptions);
 	}, []);
 
 	return (
@@ -83,13 +85,19 @@ export function ChartConfigForm() {
             dispatch(updateAxesEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
           }}>
           <Typography type="primary">Axes Edges</Typography>
-          {radialEdgeStyleOpts}
+          {edgeStyleOpts}
         </Radio.Group>
         <Radio.Group value={radialEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
             dispatch(updateRadialEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
           }}>
           <Typography type="primary">Radial Edges</Typography>
-          {radialEdgeStyleOpts}
+          {edgeStyleOpts}
+        </Radio.Group>
+        <Radio.Group value={outerEdgeStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
+            dispatch(updateOuterEdgeStyle({ edgeStyle: event.target.value as EdgeStyle }));
+          }}>
+          <Typography type="primary">Outer Edge</Typography>
+          {edgeStyleOpts}
         </Radio.Group>
 			<Space direction="vertical">
         <Typography type="primary">Axis</Typography>
