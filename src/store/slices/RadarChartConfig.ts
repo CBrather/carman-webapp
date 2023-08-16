@@ -10,8 +10,11 @@ export enum EdgeStyle {
 
 type ChartConfigState = {
 	axes: Axis[];
+  axesColor: string;
   axesEdgesStyle: EdgeStyle;
+  outerEdgeColor: string;
   outerEdgeStyle: EdgeStyle;
+  radialEdgesColor: string;
 	radialEdgesStyle: EdgeStyle;
   selectedAxis: number;
 	startingAngle: number;
@@ -19,8 +22,11 @@ type ChartConfigState = {
 
 const initialState: ChartConfigState = {
 	axes: initDefaultAxes(),
+  axesColor: '#838383',
   axesEdgesStyle: EdgeStyle.Solid,
+  outerEdgeColor: '#838383',
   outerEdgeStyle: EdgeStyle.Solid,
+  radialEdgesColor: '#838383',
 	radialEdgesStyle: EdgeStyle.Solid,
   selectedAxis: 0,
 	startingAngle: 0
@@ -44,6 +50,9 @@ export const selectAxisByIndex = createSelector(
 export const selectAxesEdgesStyle = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.axesEdgesStyle);
 export const selectOuterEdgeStyle = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.outerEdgeStyle);
 export const selectRadialEdgesStyle = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.radialEdgesStyle);
+export const selectAxesColor = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.axesColor);
+export const selectOuterEdgeColor = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.outerEdgeColor);
+export const selectRadialEdgesColor = createSelector([pickChartConfigState], (chartConfig: ChartConfigState) => chartConfig.radialEdgesColor);
 export const selectSelectedAxis = createSelector(
   [pickChartConfigState],
   (chartConfig: ChartConfigState) => {
@@ -100,11 +109,20 @@ export const chartConfig = createSlice({
 		},
 		updateRadialEdgesStyle: (state: ChartConfigState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
 			state.radialEdgesStyle = action.payload.edgeStyle;
-		}
+		},
+    updateAxesColor: (state: ChartConfigState, action: PayloadAction<{color: string}>) => {
+      state.axesColor = action.payload.color;
+    },
+    updateOuterEdgeColor: (state: ChartConfigState, action: PayloadAction<{color: string}>) => {
+      state.outerEdgeColor = action.payload.color;
+    },
+    updateRadialEdgesColor: (state: ChartConfigState, action: PayloadAction<{color: string}>) => {
+      state.radialEdgesColor = action.payload.color;
+    }
 	}
 });
 
-export const { axisLabelChanged, axisSelected, axisTickLabelChanged, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxesEdgesStyle, updateOuterEdgeStyle, updateRadialEdgesStyle } = chartConfig.actions;
+export const { axisLabelChanged, axisSelected, axisTickLabelChanged, incrementAxes, decrementAxes, incrementSegments, decrementSegments, updateAxesEdgesStyle, updateOuterEdgeStyle, updateRadialEdgesStyle, updateAxesColor, updateOuterEdgeColor, updateRadialEdgesColor } = chartConfig.actions;
 
 /*
  ** Helper
