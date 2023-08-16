@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { AxisConfigForm } from './AxisConfigForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { InputNumber, Space, Radio, Typography } from 'antd'
+import { ColorPicker, InputNumber, Space, Radio, Typography } from 'antd'
 import {
 	EdgeStyle,
 	decrementAxes,
@@ -9,14 +9,21 @@ import {
 	incrementAxes,
 	incrementSegments,
 	selectAxes,
+	selectAxesColor,
 	selectAxesEdgesStyle,
+	selectOuterEdgeColor,
 	selectOuterEdgeStyle,
+	selectRadialEdgesColor,
 	selectRadialEdgesStyle,
 	selectSelectedAxis,
+	updateAxesColor,
 	updateAxesEdgesStyle,
+	updateOuterEdgeColor,
 	updateOuterEdgeStyle,
+	updateRadialEdgesColor,
 	updateRadialEdgesStyle
 } from '../../store/slices/RadarChartConfig';
+import { Color } from 'antd/es/color-picker';
 
 export function ChartConfigForm() {
 	const dispatch = useDispatch();
@@ -24,6 +31,9 @@ export function ChartConfigForm() {
   const axesEdgesStyle = useSelector(selectAxesEdgesStyle);
 	const radialEdgesStyle = useSelector(selectRadialEdgesStyle);
 	const outerEdgeStyle = useSelector(selectOuterEdgeStyle);
+  const axesColor = useSelector(selectAxesColor);
+  const outerEdgeColor = useSelector(selectOuterEdgeColor);
+  const radialEdgesColor = useSelector(selectRadialEdgesColor);
   const selectedAxis = useSelector(selectSelectedAxis)
 	const [axesAmount, setAxesAmount] = useState(axes.length);
 	const [segmentsAmount, setSegmentsAmount] = useState(selectedAxis.axis.ticks.length);
@@ -81,24 +91,54 @@ export function ChartConfigForm() {
           }}
         />
         </Space>
-        <Radio.Group value={axesEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
-            dispatch(updateAxesEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
-          }}>
+        <Space direction="vertical">
           <Typography type="primary">Axes Edges</Typography>
-          {edgeStyleOpts}
-        </Radio.Group>
-        <Radio.Group value={radialEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
-            dispatch(updateRadialEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
-          }}>
+          <Space>
+            <Radio.Group value={axesEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
+                dispatch(updateAxesEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
+              }}>
+              {edgeStyleOpts}
+            </Radio.Group>
+            <ColorPicker
+              showText
+              value={axesColor}
+              onChangeComplete={(value: Color) => {
+                dispatch(updateAxesColor({color: value.toHexString()}))
+              }} />
+          </Space>
+        </Space>
+        <Space direction="vertical">
           <Typography type="primary">Radial Edges</Typography>
-          {edgeStyleOpts}
-        </Radio.Group>
-        <Radio.Group value={outerEdgeStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
-            dispatch(updateOuterEdgeStyle({ edgeStyle: event.target.value as EdgeStyle }));
-          }}>
+          <Space>
+            <Radio.Group value={radialEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
+                dispatch(updateRadialEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
+              }}>
+              {edgeStyleOpts}
+            </Radio.Group>
+            <ColorPicker
+              showText
+              value={radialEdgesColor}
+              onChangeComplete={(value: Color) => {
+                dispatch(updateRadialEdgesColor({color: value.toHexString()}))
+              }} />
+          </Space>
+        </Space>
+        <Space direction="vertical">
           <Typography type="primary">Outer Edge</Typography>
-          {edgeStyleOpts}
-        </Radio.Group>
+          <Space>
+            <Radio.Group value={outerEdgeStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
+                dispatch(updateOuterEdgeStyle({ edgeStyle: event.target.value as EdgeStyle }));
+              }}>
+              {edgeStyleOpts}
+            </Radio.Group>
+            <ColorPicker
+              showText
+              value={outerEdgeColor}
+              onChangeComplete={(value: Color) => {
+                dispatch(updateOuterEdgeColor({color: value.toHexString()}))
+              }} />
+          </Space>
+        </Space>
 			<Space direction="vertical">
         <Typography type="primary">Axis</Typography>
         <AxisConfigForm />

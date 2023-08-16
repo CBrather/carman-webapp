@@ -1,7 +1,7 @@
 import './RadarChart.css';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { EdgeStyle, selectChartConfig } from '../../store/slices/RadarChartConfig';
+import { EdgeStyle, selectChartConfig, chartConfig } from '../../store/slices/RadarChartConfig';
 import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
 import { useEffect, useState } from 'react';
 import { axisSelected } from '../../store/slices/RadarChartConfig'
@@ -87,6 +87,7 @@ export default function RadarChartLayout() {
 			const axisPath = getAxisPath(axes[i]);
 			axesPaths.push(<path
         strokeDasharray={chartConfig.axesEdgesStyle == EdgeStyle.Dashed ? 5 : 0}
+        stroke={chartConfig.axesColor}
         className="radar-axis"
         d={axisPath}
         key={axes[i].label + i}
@@ -112,6 +113,7 @@ export default function RadarChartLayout() {
 			const path = buildSvgPath(edgePoints, true);
 			edgePaths.push(<path
         strokeDasharray={chartConfig.radialEdgesStyle == EdgeStyle.Dashed ? 5 : 0}
+        stroke={chartConfig.radialEdgesColor}
         d={path}
         key={'radial-edge-' + i}
       />);
@@ -121,6 +123,7 @@ export default function RadarChartLayout() {
 		const outerPath = buildSvgPath(outerEdgePoints, true);
 		edgePaths.push(<path
       strokeDasharray={chartConfig.outerEdgeStyle == EdgeStyle.Dashed ? 5 : 0}
+      stroke={chartConfig.outerEdgeColor}
       d={outerPath}
       key="outerEdge" />);
 
