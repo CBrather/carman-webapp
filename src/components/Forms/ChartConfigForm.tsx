@@ -31,7 +31,7 @@ import {
 } from '../../store/slices/RadarChartConfig';
 import { Color } from 'antd/es/color-picker';
 
-export function ChartConfigForm() {
+export default function ChartConfigForm() {
 	const dispatch = useDispatch();
 	const axes = useSelector(selectAxes);
   const axesEdgesStyle = useSelector(selectAxesEdgesStyle);
