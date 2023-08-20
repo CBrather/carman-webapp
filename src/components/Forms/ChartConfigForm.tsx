@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { AxisConfigForm } from './AxisConfigForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { ColorPicker, InputNumber, Space, Radio, Typography } from 'antd'
+import { ColorPicker, InputNumber, Space, Radio, Typography, Row, Col } from 'antd'
 import {
 	EdgeStyle,
 	decrementAxes,
@@ -102,72 +102,92 @@ export default function ChartConfigForm() {
         </Space>
         <Space direction="vertical">
           <Typography type="primary">Axes Edges</Typography>
-          <Space>
-            <Radio.Group value={axesEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
-                dispatch(updateAxesEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
-              }}>
-              {edgeStyleOpts}
-            </Radio.Group>
-            <ColorPicker
-              showText
-              value={axesColor}
-              onChangeComplete={(value: Color) => {
-                dispatch(updateAxesColor({color: value.toHexString()}))
-              }} />
-            <InputNumber
-              addonBefore="Thickness"
-              value={axesThickness}
-              onChange={(value: number) => {
-                dispatch(updateAxesThickness({thickness: value}));
-              }}
-            />
-          </Space>
+          <Row>
+            <Col span={8}>
+              <Radio.Group value={axesEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
+                  dispatch(updateAxesEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
+                }}>
+                {edgeStyleOpts}
+              </Radio.Group>
+            </Col>
+            <Col span={6}>
+              <ColorPicker
+                showText
+                value={axesColor}
+                onChangeComplete={(value: Color) => {
+                  dispatch(updateAxesColor({color: value.toHexString()}))
+                }} />
+            </Col>
+            <Col span={8}>
+              <InputNumber
+                addonBefore="Thickness"
+                value={axesThickness}
+                onChange={(value: number) => {
+                  dispatch(updateAxesThickness({thickness: value}));
+                }}
+              />
+            </Col>
+          </Row>
         </Space>
         <Space direction="vertical">
           <Typography type="primary">Radial Edges</Typography>
-          <Space>
-            <Radio.Group value={radialEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
-                dispatch(updateRadialEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
-              }}>
-              {edgeStyleOpts}
-            </Radio.Group>
-            <ColorPicker
-              showText
-              value={radialEdgesColor}
-              onChangeComplete={(value: Color) => {
-                dispatch(updateRadialEdgesColor({color: value.toHexString()}))
-              }} />
-            <InputNumber
-              addonBefore="Thickness"
-              value={radialEdgesThickness}
-              onChange={(value: number) => {
-                dispatch(updateRadialEdgesThickness({thickness: value}));
-              }}
-            />
-          </Space>
+          <Row>
+            <Col span={8}>
+              <Radio.Group value={radialEdgesStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
+                  dispatch(updateRadialEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
+                }}>
+                {edgeStyleOpts}
+              </Radio.Group>
+            </Col>
+            <Col span={6}>
+              <ColorPicker
+                showText
+                value={radialEdgesColor}
+                onChangeComplete={(value: Color) => {
+                  dispatch(updateRadialEdgesColor({color: value.toHexString()}))
+                }}
+              />
+            </Col>
+            <Col span ={8}>
+              <InputNumber
+                addonBefore="Thickness"
+                value={radialEdgesThickness}
+                onChange={(value: number) => {
+                  dispatch(updateRadialEdgesThickness({thickness: value}));
+                }}
+              />
+            </Col>
+          </Row>
         </Space>
         <Space direction="vertical">
           <Typography type="primary">Outer Edge</Typography>
-          <Space>
-            <Radio.Group value={outerEdgeStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
-                dispatch(updateOuterEdgeStyle({ edgeStyle: event.target.value as EdgeStyle }));
-              }}>
-              {edgeStyleOpts}
-            </Radio.Group>
-            <ColorPicker
-              showText
-              value={outerEdgeColor}
-              onChangeComplete={(value: Color) => {
-                dispatch(updateOuterEdgeColor({color: value.toHexString()}))
-              }} />
-            <InputNumber
-              addonBefore="Thickness"
-              value={outerEdgeThickness}
-              onChange={(value: number) => {
-                dispatch(updateOuterEdgeThickness({thickness: value}));
-              }}
-            />
-          </Space>
+          <Row>
+            <Col span={8}>
+              <Radio.Group value={outerEdgeStyle} onChange={(event: ChangeEvent<HTMLSelectElement>) => {;
+                  dispatch(updateOuterEdgeStyle({ edgeStyle: event.target.value as EdgeStyle }));
+                }}>
+                {edgeStyleOpts}
+              </Radio.Group>
+            </Col>
+            <Col span={6}>
+              <ColorPicker
+                showText
+                value={outerEdgeColor}
+                onChangeComplete={(value: Color) => {
+                  dispatch(updateOuterEdgeColor({color: value.toHexString()}))
+                }}
+              />
+            </Col>
+            <Col span={8}>
+              <InputNumber
+                addonBefore="Thickness"
+                value={outerEdgeThickness}
+                onChange={(value: number) => {
+                  dispatch(updateOuterEdgeThickness({thickness: value}));
+                }}
+              />
+            </Col>
+          </Row>
         </Space>
 			<Space direction="vertical">
         <Typography type="primary">Axis</Typography>

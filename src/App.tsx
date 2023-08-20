@@ -1,10 +1,8 @@
-import { Layout, Menu, Tooltip } from 'antd'
+import { Layout, Menu } from 'antd'
 import {
-  MenuUnfoldOutlined,
   EditOutlined,
   RadarChartOutlined,
 } from '@ant-design/icons'
-import { useState } from 'react';
 import { useLocation, useNavigate, Route, Routes } from 'react-router-dom'
 import ChartLayoutDesigner from './pages/ChartLayoutDesigner';
 import ModelEditor from './pages/ModelEditor';
@@ -12,12 +10,6 @@ import ModelEditor from './pages/ModelEditor';
 const { Content, Sider } = Layout;
 
 function App() {
-  const [collapsed, setCollapsed] = useState(true);
-
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-
   let navigate = useNavigate();
   const selectedKey = useLocation().pathname
 
@@ -33,7 +25,7 @@ function App() {
       <Sider trigger={null}>
         <Menu
           mode="inline"
-          theme="light"
+          theme="dark"
           defaultSelectedKeys={['editor']}
           selectedKeys={highlight()}
           style={{ height: '100%', borderRight:0 }}
