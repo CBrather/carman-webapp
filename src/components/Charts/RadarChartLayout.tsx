@@ -1,10 +1,9 @@
 import './RadarChart.css';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { EdgeStyle, selectChartConfig } from '../../store/slices/RadarChartConfig';
+import { axisSelected, EdgeStyle, selectChartConfig } from '../../store/slices/RadarChartConfig';
 import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
 import { useEffect, useState } from 'react';
-import { axisSelected } from '../../store/slices/RadarChartConfig'
 
 export default function RadarChartLayout() {
 	const width = 750;
