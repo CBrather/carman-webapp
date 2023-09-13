@@ -1,0 +1,39 @@
+name: Build Pipeline
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+  workflow_dispatch:
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Download Dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test:ci
+
+      - name: Publish Test Results
+        uses: dorny/test-reporter@v1.6.0
+        if: always()
+        with:
+          name: Tests Results
+          path: test/results.xml
+          reporter: java-junit
+
+      - name: Build
+        run: npm run build
