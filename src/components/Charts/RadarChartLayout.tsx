@@ -18,7 +18,7 @@ export default function RadarChartLayout() {
 	const [axesPathElements, setAxesPathsElements] = useState<React.JSX.Element[]>();
 	const [radialPathElements, setRadialPathElements] = useState<React.JSX.Element[]>();
 
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		calculateAxes();
@@ -84,14 +84,17 @@ export default function RadarChartLayout() {
 
 		for (let i = 0; i < axes.length; i++) {
 			const axisPath = getAxisPath(axes[i]);
-			axesPaths.push(<path
-        strokeDasharray={chartConfig.axesEdgesStyle == EdgeStyle.Dashed ? 5 : 0}
-        stroke={chartConfig.axesColor}
-        strokeWidth={chartConfig.axesThickness}
-        className="radar-axis"
-        d={axisPath}
-        key={axes[i].label + i}
-        onClick={() => dispatch(axisSelected(i))} />);
+			axesPaths.push(
+				<path
+					strokeDasharray={chartConfig.axesEdgesStyle == EdgeStyle.Dashed ? 5 : 0}
+					stroke={chartConfig.axesColor}
+					strokeWidth={chartConfig.axesThickness}
+					className="radar-axis"
+					d={axisPath}
+					key={axes[i].label + i}
+					onClick={() => dispatch(axisSelected(i))}
+				/>
+			);
 		}
 
 		return axesPaths;
@@ -111,23 +114,28 @@ export default function RadarChartLayout() {
 		for (let i = 0; i < radialEdges.length - 1; i++) {
 			const edgePoints = radialEdges[i];
 			const path = buildSvgPath(edgePoints, true);
-			edgePaths.push(<path
-        strokeDasharray={chartConfig.radialEdgesStyle == EdgeStyle.Dashed ? 5 : 0}
-        stroke={chartConfig.radialEdgesColor}
-        strokeWidth={chartConfig.radialEdgesThickness}
-        d={path}
-        key={'radial-edge-' + i}
-      />);
+			edgePaths.push(
+				<path
+					strokeDasharray={chartConfig.radialEdgesStyle == EdgeStyle.Dashed ? 5 : 0}
+					stroke={chartConfig.radialEdgesColor}
+					strokeWidth={chartConfig.radialEdgesThickness}
+					d={path}
+					key={'radial-edge-' + i}
+				/>
+			);
 		}
 
 		const outerEdgePoints = radialEdges.slice(-1)[0];
 		const outerPath = buildSvgPath(outerEdgePoints, true);
-		edgePaths.push(<path
-      strokeDasharray={chartConfig.outerEdgeStyle == EdgeStyle.Dashed ? 5 : 0}
-      stroke={chartConfig.outerEdgeColor}
-      strokeWidth={chartConfig.outerEdgeThickness}
-      d={outerPath}
-      key="outerEdge" />);
+		edgePaths.push(
+			<path
+				strokeDasharray={chartConfig.outerEdgeStyle == EdgeStyle.Dashed ? 5 : 0}
+				stroke={chartConfig.outerEdgeColor}
+				strokeWidth={chartConfig.outerEdgeThickness}
+				d={outerPath}
+				key="outerEdge"
+			/>
+		);
 
 		return edgePaths;
 	}
