@@ -1,7 +1,7 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AxisConfigForm } from './AxisConfigForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { ColorPicker, InputNumber, Space, Radio, Typography, Row, Col } from 'antd';
+import { ColorPicker, InputNumber, Space, Radio, Typography, Row, Col, RadioChangeEvent } from 'antd';
 import {
 	EdgeStyle,
 	decrementAxes,
@@ -90,27 +90,27 @@ export default function ChartConfigForm() {
 				<InputNumber
 					addonBefore="Axes"
 					value={axesAmount}
-					onChange={(value: number) => {
-						const newValue: number = value <= 0 ? 1 : value;
+					onChange={(value: number | null) => {
+						const newValue: number = value && value > 0 ? value : 1;
 						setAxesAmount(newValue);
 					}}
 				/>
 				<InputNumber
 					addonBefore="Segments"
 					value={segmentsAmount}
-					onChange={(value: number) => {
-						const newValue: number = value <= 0 ? 1 : value;
+					onChange={(value: number | null) => {
+						const newValue: number = value && value > 0 ? value : 1;
 						setSegmentsAmount(newValue);
 					}}
 				/>
 			</Space>
 			<Space direction="vertical">
-				<Typography type="primary">Axes Edges</Typography>
+				<Typography>Axes Edges</Typography>
 				<Row>
 					<Col span={8}>
 						<Radio.Group
 							value={axesEdgesStyle}
-							onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+							onChange={(event: RadioChangeEvent) => {
 								dispatch(updateAxesEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
 							}}
 						>
@@ -130,20 +130,20 @@ export default function ChartConfigForm() {
 						<InputNumber
 							addonBefore="Thickness"
 							value={axesThickness}
-							onChange={(value: number) => {
-								dispatch(updateAxesThickness({ thickness: value }));
+							onChange={(value: number | null) => {
+								dispatch(updateAxesThickness({ thickness: value || 1 }));
 							}}
 						/>
 					</Col>
 				</Row>
 			</Space>
 			<Space direction="vertical">
-				<Typography type="primary">Radial Edges</Typography>
+				<Typography>Radial Edges</Typography>
 				<Row>
 					<Col span={8}>
 						<Radio.Group
 							value={radialEdgesStyle}
-							onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+							onChange={(event: RadioChangeEvent) => {
 								dispatch(updateRadialEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
 							}}
 						>
@@ -163,20 +163,20 @@ export default function ChartConfigForm() {
 						<InputNumber
 							addonBefore="Thickness"
 							value={radialEdgesThickness}
-							onChange={(value: number) => {
-								dispatch(updateRadialEdgesThickness({ thickness: value }));
+							onChange={(value: number | null) => {
+								dispatch(updateRadialEdgesThickness({ thickness: value || 1 }));
 							}}
 						/>
 					</Col>
 				</Row>
 			</Space>
 			<Space direction="vertical">
-				<Typography type="primary">Outer Edge</Typography>
+				<Typography>Outer Edge</Typography>
 				<Row>
 					<Col span={8}>
 						<Radio.Group
 							value={outerEdgeStyle}
-							onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+							onChange={(event: RadioChangeEvent) => {
 								dispatch(updateOuterEdgeStyle({ edgeStyle: event.target.value as EdgeStyle }));
 							}}
 						>
@@ -196,15 +196,15 @@ export default function ChartConfigForm() {
 						<InputNumber
 							addonBefore="Thickness"
 							value={outerEdgeThickness}
-							onChange={(value: number) => {
-								dispatch(updateOuterEdgeThickness({ thickness: value }));
+							onChange={(value: number | null) => {
+								dispatch(updateOuterEdgeThickness({ thickness: value || 1 }));
 							}}
 						/>
 					</Col>
 				</Row>
 			</Space>
 			<Space direction="vertical">
-				<Typography type="primary">Axis</Typography>
+				<Typography>Axis</Typography>
 				<AxisConfigForm />
 			</Space>
 		</Space>
