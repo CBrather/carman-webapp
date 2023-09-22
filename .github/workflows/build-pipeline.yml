@@ -35,5 +35,11 @@ jobs:
           path: test/results.xml
           reporter: java-junit
 
+      - name: Codacy Coverage Reporter
+        uses: codacy/codacy-coverage-reporter-action@v1.3.0
+        with:
+          project-token: ${{ secrets.CODACY_API_TOKEN }}
+          coverage-reports: "test/coverage/lcov.info"
+
       - name: Build
         run: npm run build

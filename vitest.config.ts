@@ -15,6 +15,7 @@ export default defineConfig({
 			enabled: true,
 			include: ['src/**/*.{js,jsx,ts,tsx}'],
 			provider: 'v8',
+			reporter: ['lcov'],
 			reportsDirectory: 'test/coverage'
 		},
 		outputFile: 'test/results.xml',
