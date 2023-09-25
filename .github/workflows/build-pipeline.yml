@@ -35,11 +35,15 @@ jobs:
           path: test/results.xml
           reporter: java-junit
 
-      - name: Codacy Coverage Reporter
-        uses: codacy/codacy-coverage-reporter-action@v1.3.0
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2.0.2
         with:
-          project-token: ${{ secrets.CODACY_API_TOKEN }}
-          coverage-reports: 'test/coverage/lcov.info'
+          args: >
+            -Dsonar.organization=cbrather
+            -Dsonar.projectKey=CBrather_carman-webapp
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Build
         run: npm run build
