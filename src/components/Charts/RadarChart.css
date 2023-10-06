@@ -4,7 +4,7 @@
 	padding-bottom: 40px;
 }
 
-svg {
+svg.chart-layout {
 	fill: none;
 	stroke: #838383;
 	display: block;
