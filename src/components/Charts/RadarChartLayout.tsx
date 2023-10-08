@@ -165,7 +165,7 @@ export default function RadarChartLayout() {
 				height: height + 'px'
 			}}
 		>
-			<svg width={width} height={height} className='chart-layout'>
+			<svg width={width} height={height} className="chart-layout">
 				{axesPathElements}
 				{radialPathElements}
 			</svg>
