@@ -1,7 +1,7 @@
 import './RadarChart.css';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { axisSelected, EdgeStyle, selectChartConfig } from '../../store/slices/RadarChartConfig';
+import { axisSelected, EdgeStyle, selectChartConfig } from '../../store/slices/RadarChartDesign';
 import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
 import { useEffect, useState } from 'react';
 

@@ -5,7 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Route, Routes } from 'react-router-dom';
 
-import ChartLayoutDesigner from './pages/ChartLayoutDesigner';
+import ChartDesigner from './pages/ChartDesigner';
 import ModelEditor from './pages/ModelEditor';
 import Homepage from './pages/Home';
 import { GetEnvironmentConfig } from './services/environment';
@@ -80,7 +80,7 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Homepage />} />
 					<Route path="/editor" element={<ModelEditor />} />
-					<Route path="/designer" element={<ChartLayoutDesigner />} />
+					<Route path="/designer" element={<ChartDesigner />} />
 				</Routes>
 			</Content>
 		</Layout>

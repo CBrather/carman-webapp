@@ -28,7 +28,7 @@ import {
 	updateRadialEdgesColor,
 	updateRadialEdgesStyle,
 	updateRadialEdgesThickness
-} from '../../store/slices/RadarChartConfig';
+} from '../../store/slices/RadarChartDesign';
 import { Color } from 'antd/es/color-picker';
 
 export default function ChartConfigForm() {

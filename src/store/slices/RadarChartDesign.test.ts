@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { expect, it, describe } from 'vitest';
-import { chartConfig } from './RadarChartConfig';
+import { chartConfig } from './RadarChartDesign';
 
 describe('Slice: RadarChartConfig', () => {
 	it('initializes with empty user non-authorized user', () => {
