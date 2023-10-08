@@ -1,53 +1,84 @@
 import { Layout, Menu } from 'antd';
+import { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems';
 import { EditOutlined, RadarChartOutlined } from '@ant-design/icons';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Route, Routes } from 'react-router-dom';
+
 import ChartLayoutDesigner from './pages/ChartLayoutDesigner';
 import ModelEditor from './pages/ModelEditor';
+import Homepage from './pages/Home';
+import { GetEnvironmentConfig } from './services/environment';
 
 const { Content, Sider } = Layout;
+const { audience } = GetEnvironmentConfig().auth;
 
 function App() {
 	const navigate = useNavigate();
+	const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 	const selectedKey = useLocation().pathname;
 
-	const highlight = () => {
-		if (selectedKey === '/editor') {
-			return ['editor'];
-		} else if (selectedKey === '/designer') {
-			return ['designer'];
+	const defaultMenuItems: ItemType<MenuItemType>[] = [
+		{
+			key: 'editor',
+			icon: <RadarChartOutlined />,
+			label: 'Editor',
+			onClick: () => {
+				navigate('/editor');
+			}
+		},
+		{
+			key: 'designer',
+			icon: <EditOutlined />,
+			label: 'Designer',
+			onClick: () => {
+				navigate('/designer');
+			}
+		}
+	];
+
+	const loginMenuItem: ItemType<MenuItemType> = {
+		key: 'login',
+		icon: <EditOutlined />,
+		label: 'Login',
+		onClick: () => {
+			loginWithRedirect({ authorizationParams: { audience } });
 		}
 	};
+
+	const logoutMenuItem: ItemType<MenuItemType> = {
+		key: 'logout',
+		icon: <EditOutlined />,
+		label: 'Logout',
+		onClick: () => {
+			logout();
+		}
+	};
+
+	const [menuItems, setMenuItems] = useState<ItemType<MenuItemType>[]>(defaultMenuItems);
+
+	useEffect(() => {
+		const newMenuItems: ItemType<MenuItemType>[] = [...defaultMenuItems];
+
+		if (isAuthenticated) newMenuItems.unshift(logoutMenuItem);
+		if (!isAuthenticated) newMenuItems.unshift(loginMenuItem);
+
+		setMenuItems(newMenuItems);
+	}, [isAuthenticated]);
+
 	return (
-		<Layout>
+		<Layout style={{ height: '100vh' }}>
 			<Sider trigger={null}>
 				<Menu
-					mode="inline"
-					theme="dark"
 					defaultSelectedKeys={['editor']}
-					selectedKeys={highlight()}
+					selectedKeys={highlight(selectedKey)}
 					style={{ height: '100%', borderRight: 0 }}
-					items={[
-						{
-							key: 'editor',
-							icon: <RadarChartOutlined />,
-							label: 'Editor',
-							onClick: () => {
-								navigate('/editor');
-							}
-						},
-						{
-							key: 'designer',
-							icon: <EditOutlined />,
-							label: 'Designer',
-							onClick: () => {
-								navigate('/designer');
-							}
-						}
-					]}
+					items={menuItems}
 				/>
 			</Sider>
 			<Content>
 				<Routes>
+					<Route path="/" element={<Homepage />} />
 					<Route path="/editor" element={<ModelEditor />} />
 					<Route path="/designer" element={<ChartLayoutDesigner />} />
 				</Routes>
@@ -55,5 +86,16 @@ function App() {
 		</Layout>
 	);
 }
+
+const highlight = (selectedKey: string) => {
+	switch (selectedKey) {
+		case '/editor':
+			return ['editor'];
+		case '/designer':
+			return ['designer'];
+		default:
+			return [];
+	}
+};
 
 export default App;
