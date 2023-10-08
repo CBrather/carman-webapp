@@ -35,12 +35,6 @@ jobs:
           path: test/results.xml
           reporter: java-junit
 
-      - name: Codacy Coverage Reporter
-        uses: codacy/codacy-coverage-reporter-action@v1.3.0
-        with:
-          project-token: ${{ secrets.CODACY_API_TOKEN }}
-          coverage-reports: 'test/coverage/lcov.info'
-
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2.0.2
         with:
