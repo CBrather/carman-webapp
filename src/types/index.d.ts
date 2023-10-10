@@ -1,4 +1,4 @@
-import { EnvironmentConfig } from '../services/environment';
+import { EnvironmentConfig } from '../services/Environment';
 
 export {};
 

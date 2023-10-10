@@ -8,7 +8,7 @@ import { useLocation, useNavigate, Route, Routes } from 'react-router-dom';
 import ChartDesigner from './pages/ChartDesigner';
 import ModelEditor from './pages/ModelEditor';
 import Homepage from './pages/Home';
-import { GetEnvironmentConfig } from './services/environment';
+import { GetEnvironmentConfig } from './services/Environment';
 
 const { Content, Sider } = Layout;
 const { audience } = GetEnvironmentConfig().auth;

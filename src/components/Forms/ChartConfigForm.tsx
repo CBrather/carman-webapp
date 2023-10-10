@@ -4,45 +4,35 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ColorPicker, InputNumber, Space, Radio, Typography, Row, Col, RadioChangeEvent } from 'antd';
 import {
 	EdgeStyle,
+	selectCircularEdgesDesign,
+	selectOuterEdgeDesign,
+	selectRadialEdgesDesign,
+	outerEdgeColorChanged,
+	outerEdgeStyleChanged,
+	outerEdgeThicknessChanged,
+	radialEdgesColorChanged,
+	radialEdgesStyleChanged,
+	radialEdgesThicknessChanged,
+	circularEdgesStyleChanged,
+	circularEdgesColorChanged,
+	circularEdgesThicknessChanged
+} from '../../store/slices/RadarChartDesign';
+import {
 	decrementAxes,
 	decrementSegments,
 	incrementAxes,
 	incrementSegments,
 	selectAxes,
-	selectAxesColor,
-	selectAxesEdgesStyle,
-	selectAxesThickness,
-	selectOuterEdgeColor,
-	selectOuterEdgeStyle,
-	selectOuterEdgeThickness,
-	selectRadialEdgesColor,
-	selectRadialEdgesStyle,
-	selectRadialEdgesThickness,
-	selectSelectedAxis,
-	updateAxesColor,
-	updateAxesEdgesStyle,
-	updateAxesThickness,
-	updateOuterEdgeColor,
-	updateOuterEdgeStyle,
-	updateOuterEdgeThickness,
-	updateRadialEdgesColor,
-	updateRadialEdgesStyle,
-	updateRadialEdgesThickness
-} from '../../store/slices/RadarChartDesign';
+	selectSelectedAxis
+} from '../../store/slices/DataSet';
 import { Color } from 'antd/es/color-picker';
 
 export default function ChartConfigForm() {
 	const dispatch = useDispatch();
 	const axes = useSelector(selectAxes);
-	const axesEdgesStyle = useSelector(selectAxesEdgesStyle);
-	const radialEdgesStyle = useSelector(selectRadialEdgesStyle);
-	const outerEdgeStyle = useSelector(selectOuterEdgeStyle);
-	const axesColor = useSelector(selectAxesColor);
-	const outerEdgeColor = useSelector(selectOuterEdgeColor);
-	const radialEdgesColor = useSelector(selectRadialEdgesColor);
-	const axesThickness = useSelector(selectAxesThickness);
-	const outerEdgeThickness = useSelector(selectOuterEdgeThickness);
-	const radialEdgesThickness = useSelector(selectRadialEdgesThickness);
+	const circularEdgesDesign = useSelector(selectCircularEdgesDesign);
+	const outerEdgeDesign = useSelector(selectOuterEdgeDesign);
+	const radialEdgesDesign = useSelector(selectRadialEdgesDesign);
 	const selectedAxis = useSelector(selectSelectedAxis);
 	const [axesAmount, setAxesAmount] = useState(axes.length);
 	const [segmentsAmount, setSegmentsAmount] = useState(selectedAxis.axis.ticks.length);
@@ -105,13 +95,13 @@ export default function ChartConfigForm() {
 				/>
 			</Space>
 			<Space direction="vertical">
-				<Typography>Axes Edges</Typography>
+				<Typography>Radial Edges</Typography>
 				<Row>
 					<Col span={8}>
 						<Radio.Group
-							value={axesEdgesStyle}
+							value={radialEdgesDesign.style}
 							onChange={(event: RadioChangeEvent) => {
-								dispatch(updateAxesEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
+								dispatch(radialEdgesStyleChanged({ edgeStyle: event.target.value as EdgeStyle }));
 							}}
 						>
 							{edgeStyleOpts}
@@ -120,31 +110,31 @@ export default function ChartConfigForm() {
 					<Col span={6}>
 						<ColorPicker
 							showText
-							value={axesColor}
+							value={radialEdgesDesign.color}
 							onChangeComplete={(value: Color) => {
-								dispatch(updateAxesColor({ color: value.toHexString() }));
+								dispatch(radialEdgesColorChanged({ color: value.toHexString() }));
 							}}
 						/>
 					</Col>
 					<Col span={8}>
 						<InputNumber
 							addonBefore="Thickness"
-							value={axesThickness}
+							value={radialEdgesDesign.thickness}
 							onChange={(value: number | null) => {
-								dispatch(updateAxesThickness({ thickness: value || 1 }));
+								dispatch(radialEdgesThicknessChanged({ thickness: value ?? 1 }));
 							}}
 						/>
 					</Col>
 				</Row>
 			</Space>
 			<Space direction="vertical">
-				<Typography>Radial Edges</Typography>
+				<Typography>Circular Edges</Typography>
 				<Row>
 					<Col span={8}>
 						<Radio.Group
-							value={radialEdgesStyle}
+							value={circularEdgesDesign.style}
 							onChange={(event: RadioChangeEvent) => {
-								dispatch(updateRadialEdgesStyle({ edgeStyle: event.target.value as EdgeStyle }));
+								dispatch(circularEdgesStyleChanged({ edgeStyle: event.target.value as EdgeStyle }));
 							}}
 						>
 							{edgeStyleOpts}
@@ -153,18 +143,18 @@ export default function ChartConfigForm() {
 					<Col span={6}>
 						<ColorPicker
 							showText
-							value={radialEdgesColor}
+							value={circularEdgesDesign.color}
 							onChangeComplete={(value: Color) => {
-								dispatch(updateRadialEdgesColor({ color: value.toHexString() }));
+								dispatch(circularEdgesColorChanged({ color: value.toHexString() }));
 							}}
 						/>
 					</Col>
 					<Col span={8}>
 						<InputNumber
 							addonBefore="Thickness"
-							value={radialEdgesThickness}
+							value={circularEdgesDesign.thickness}
 							onChange={(value: number | null) => {
-								dispatch(updateRadialEdgesThickness({ thickness: value || 1 }));
+								dispatch(circularEdgesThicknessChanged({ thickness: value ?? 1 }));
 							}}
 						/>
 					</Col>
@@ -175,9 +165,9 @@ export default function ChartConfigForm() {
 				<Row>
 					<Col span={8}>
 						<Radio.Group
-							value={outerEdgeStyle}
+							value={outerEdgeDesign.style}
 							onChange={(event: RadioChangeEvent) => {
-								dispatch(updateOuterEdgeStyle({ edgeStyle: event.target.value as EdgeStyle }));
+								dispatch(outerEdgeStyleChanged({ edgeStyle: event.target.value as EdgeStyle }));
 							}}
 						>
 							{edgeStyleOpts}
@@ -186,18 +176,18 @@ export default function ChartConfigForm() {
 					<Col span={6}>
 						<ColorPicker
 							showText
-							value={outerEdgeColor}
+							value={outerEdgeDesign.color}
 							onChangeComplete={(value: Color) => {
-								dispatch(updateOuterEdgeColor({ color: value.toHexString() }));
+								dispatch(outerEdgeColorChanged({ color: value.toHexString() }));
 							}}
 						/>
 					</Col>
 					<Col span={8}>
 						<InputNumber
 							addonBefore="Thickness"
-							value={outerEdgeThickness}
+							value={outerEdgeDesign.thickness}
 							onChange={(value: number | null) => {
-								dispatch(updateOuterEdgeThickness({ thickness: value || 1 }));
+								dispatch(outerEdgeThicknessChanged({ thickness: value ?? 1 }));
 							}}
 						/>
 					</Col>
