@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TickInput } from './Inputs/TickInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedAxis, axisTickLabelChanged, axisLabelChanged } from '../../store/slices/RadarChartDesign';
+import { selectSelectedAxis, axisTickLabelChanged, axisLabelChanged } from '../../store/slices/DataSet';
 import { Input, Space } from 'antd';
 
 export function AxisConfigForm() {

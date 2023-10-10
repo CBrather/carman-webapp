@@ -10,7 +10,7 @@ import store from './store/store.ts';
 import App from './App.tsx';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
-import { GetEnvironmentConfig } from './services/environment.ts';
+import { GetEnvironmentConfig } from './services/Environment.ts';
 
 const { clientID, domain } = GetEnvironmentConfig().auth;
 
