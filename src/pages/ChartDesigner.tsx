@@ -1,11 +1,17 @@
 import { Space } from 'antd';
 import ChartConfigForm from '../components/Forms/ChartConfigForm';
-import RadarChartLayout from '../features/RadarChart/RadarChartLayout';
+import RadarChartLayout from '../features/RadarChart/Layout';
+import { useSelector } from 'react-redux';
+import { selectChartDesign } from '../store/slices/RadarChartDesign';
+import { selectAxes } from '../store/slices/DataSet';
 
 export default function ChartDesigner() {
+	const chartDesign = useSelector(selectChartDesign);
+	const datasets = useSelector(selectAxes);
+
 	return (
 		<Space>
-			<RadarChartLayout />
+			<RadarChartLayout datasets={datasets} design={chartDesign} />
 			<ChartConfigForm />
 		</Space>
 	);
