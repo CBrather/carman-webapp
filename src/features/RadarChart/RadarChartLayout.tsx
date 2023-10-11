@@ -1,12 +1,11 @@
-import './RadarChart.css';
+import './RadarChartLayout.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { ChartDesignState, selectChartDesign } from '../../store/slices/RadarChartDesign';
 import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
 import { useEffect, useState } from 'react';
-import CircularEdge from './CircularEdge';
 import { selectAxes, axisSelected } from '../../store/slices/DataSet';
-import RadialEdge from './RadialEdge';
+import SVGEdge from '../../components/Forms/Charts/SVGEdge';
 
 class ChartDimensions {
 	width: number;
@@ -51,7 +50,8 @@ export default function RadarChartLayout() {
 			const points = edgeTicks.map((tick) => tick.location);
 
 			return (
-				<RadialEdge
+				<SVGEdge
+					className="radial-axis"
 					design={edgesDesign}
 					points={points}
 					key={axis.label + i}
@@ -66,7 +66,12 @@ export default function RadarChartLayout() {
 	function getCircularEdges(edgesPoints: Coordinate2D[][]): React.JSX.Element[] {
 		const edges = edgesPoints.slice(0, -1).map((edgePoints): React.JSX.Element => {
 			return (
-				<CircularEdge design={chartDesign.circularEdgesDesign} key={edgePoints[0].toString()} points={edgePoints} />
+				<SVGEdge
+					closed={true}
+					design={chartDesign.circularEdgesDesign}
+					key={edgePoints[0].toString()}
+					points={edgePoints}
+				/>
 			);
 		});
 
@@ -76,12 +81,12 @@ export default function RadarChartLayout() {
 	function getOuterEdge(edgesPoints: Coordinate2D[][]): React.JSX.Element {
 		const outerEdgePoints = edgesPoints[edgesPoints.length - 1];
 
-		return <CircularEdge design={chartDesign.outerEdgeDesign} points={outerEdgePoints} key="outerEdge" />;
+		return <SVGEdge closed={true} design={chartDesign.outerEdgeDesign} points={outerEdgePoints} key="outerEdge" />;
 	}
 
 	return (
 		<div
-			className="LineChart"
+			className="chart"
 			style={{
 				width: dimensions.width + 'px',
 				height: dimensions.height + 'px'
