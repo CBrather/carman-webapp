@@ -1,4 +1,4 @@
-.LineChart {
+.chart {
 	position: relative;
 	padding-left: 40px;
 	padding-bottom: 40px;
@@ -11,6 +11,6 @@ svg.chart-layout {
 	stroke-width: 2px;
 }
 
-.radar-axis:hover {
+.radial-axis:hover {
 	stroke: #d4380d;
 }
