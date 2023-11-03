@@ -1,5 +1,10 @@
 export type EnvironmentConfig = {
+	api: APIConfig;
 	auth: AuthConfig;
+};
+
+export type APIConfig = {
+	backend: string;
 };
 
 export type AuthConfig = {
@@ -9,6 +14,9 @@ export type AuthConfig = {
 };
 
 const envConfig: EnvironmentConfig = {
+	api: {
+		backend: ''
+	},
 	auth: {
 		audience: '',
 		clientID: '',
@@ -17,7 +25,17 @@ const envConfig: EnvironmentConfig = {
 };
 
 export const GetEnvironmentConfig = (): EnvironmentConfig => {
-	if (window.env?.auth) {
+	if (!window.env) return envConfig;
+
+	const { api, auth } = window.env;
+
+	if (api) {
+		const { backend = '' } = api;
+
+		envConfig.api.backend = backend;
+	}
+
+	if (auth) {
 		const { audience = '', clientID = '', domain = '' } = window.env.auth;
 
 		envConfig.auth = {

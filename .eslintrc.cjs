@@ -8,12 +8,13 @@ module.exports = {
 		'plugin:prettier/recommended',
 		'plugin:security/recommended'
 	],
-	ignorePatterns: ['dist', '.eslintrc.cjs'],
+	ignorePatterns: ['dist', '.eslintrc.cjs', '**/*.gen.ts'],
 	parser: '@typescript-eslint/parser',
 	plugins: ['react-refresh', 'prettier'],
 	rules: {
 		'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 		'prettier/prettier': 'error',
-		'security/detect-object-injection': 'off'
+		'security/detect-object-injection': 'off',
+		'@typescript-eslint/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }]
 	}
 };

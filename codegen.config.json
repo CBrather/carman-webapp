@@ -1,0 +1,7 @@
+{
+	"schemaFile": "https://raw.githubusercontent.com/CBrather/carman-api/main/api/openapi.yaml",
+	"apiFile": "./src/api/api.ts",
+	"outputFile": "./src/api/api.gen.ts",
+	"exportName": "api",
+	"hooks": true
+}
