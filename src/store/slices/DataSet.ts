@@ -3,7 +3,7 @@ import { Axis, AxisTick, Coordinate2D } from '../types/RadarChartTypes';
 
 export const SLICE_NAME = 'dataSet';
 
-type DataSetState = {
+export type DataSetState = {
 	axes: Axis[];
 	selectedAxis: number;
 };
