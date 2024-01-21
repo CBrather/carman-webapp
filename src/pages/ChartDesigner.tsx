@@ -1,5 +1,5 @@
 import { Space } from 'antd';
-import ChartConfigForm from '../components/Forms/ChartConfigForm';
+import ChartConfigForm from '../features/RadarChartDesigner/ChartConfigForm';
 import RadarChartLayout from '../features/RadarChart/Layout';
 import { useSelector } from 'react-redux';
 import { selectChartDesign } from '../store/slices/RadarChartDesign';

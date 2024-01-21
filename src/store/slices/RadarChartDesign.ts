@@ -14,6 +14,7 @@ export type EdgeDesign = {
 };
 
 export type ChartDesignState = {
+	name: string;
 	circularEdgesDesign: EdgeDesign;
 	outerEdgeDesign: EdgeDesign;
 	radialEdgesDesign: EdgeDesign;
@@ -21,6 +22,7 @@ export type ChartDesignState = {
 };
 
 const initialState: ChartDesignState = {
+	name: 'New Design',
 	circularEdgesDesign: {
 		color: '#838383',
 		style: EdgeStyle.Solid,
@@ -50,6 +52,8 @@ const pickChartDesignState = (state: StateWithChartDesign) => state[SLICE_NAME];
 
 export const selectChartDesign = createSelector([pickChartDesignState], (chartDesign: ChartDesignState) => chartDesign);
 
+export const selectName = createSelector([pickChartDesignState], (chartDesign: ChartDesignState) => chartDesign.name);
+
 export const selectRadialEdgesDesign = createSelector(
 	[pickChartDesignState],
 	(chartDesign: ChartDesignState) => chartDesign.radialEdgesDesign
@@ -70,47 +74,20 @@ export const chartDesign = createSlice({
 	name: SLICE_NAME,
 	initialState,
 	reducers: {
-		circularEdgesColorChanged: (state: ChartDesignState, action: PayloadAction<{ color: string }>) => {
-			state.circularEdgesDesign.color = action.payload.color;
+		nameChanged: (state: ChartDesignState, action: PayloadAction<string>) => {
+			state.name = action.payload;
 		},
-		circularEdgesStyleChanged: (state: ChartDesignState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
-			state.circularEdgesDesign.style = action.payload.edgeStyle;
+		circularEdgesDesignChanged: (state: ChartDesignState, action: PayloadAction<EdgeDesign>) => {
+			state.circularEdgesDesign = action.payload;
 		},
-		circularEdgesThicknessChanged: (state: ChartDesignState, action: PayloadAction<{ thickness: number }>) => {
-			if (action.payload.thickness < 1) return;
-			state.circularEdgesDesign.thickness = action.payload.thickness;
+		outerEdgeDesignChanged: (state: ChartDesignState, action: PayloadAction<EdgeDesign>) => {
+			state.outerEdgeDesign = action.payload;
 		},
-		outerEdgeColorChanged: (state: ChartDesignState, action: PayloadAction<{ color: string }>) => {
-			state.outerEdgeDesign.color = action.payload.color;
-		},
-		outerEdgeStyleChanged: (state: ChartDesignState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
-			state.outerEdgeDesign.style = action.payload.edgeStyle;
-		},
-		outerEdgeThicknessChanged: (state: ChartDesignState, action: PayloadAction<{ thickness: number }>) => {
-			if (action.payload.thickness < 1) return;
-			state.outerEdgeDesign.thickness = action.payload.thickness;
-		},
-		radialEdgesColorChanged: (state: ChartDesignState, action: PayloadAction<{ color: string }>) => {
-			state.radialEdgesDesign.color = action.payload.color;
-		},
-		radialEdgesStyleChanged: (state: ChartDesignState, action: PayloadAction<{ edgeStyle: EdgeStyle }>) => {
-			state.radialEdgesDesign.style = action.payload.edgeStyle;
-		},
-		radialEdgesThicknessChanged: (state: ChartDesignState, action: PayloadAction<{ thickness: number }>) => {
-			if (action.payload.thickness < 1) return;
-			state.radialEdgesDesign.thickness = action.payload.thickness;
+		radialEdgesDesignChanged: (state: ChartDesignState, action: PayloadAction<EdgeDesign>) => {
+			state.radialEdgesDesign = action.payload;
 		}
 	}
 });
 
-export const {
-	circularEdgesColorChanged,
-	circularEdgesStyleChanged,
-	circularEdgesThicknessChanged,
-	outerEdgeColorChanged,
-	outerEdgeStyleChanged,
-	outerEdgeThicknessChanged,
-	radialEdgesColorChanged,
-	radialEdgesStyleChanged,
-	radialEdgesThicknessChanged
-} = chartDesign.actions;
+export const { nameChanged, circularEdgesDesignChanged, outerEdgeDesignChanged, radialEdgesDesignChanged } =
+	chartDesign.actions;
