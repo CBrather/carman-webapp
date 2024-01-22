@@ -1,8 +1,8 @@
 import './Layout.css';
-import { ChartDesignState } from '../../store/slices/RadarChartDesign';
 import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
 import { useEffect, useState } from 'react';
 import SVGEdge from '../../components/Charts/SVGEdge';
+import { RadarChartDesign } from '../../api/api.gen';
 
 class ChartDimensions {
 	width: number;
@@ -19,11 +19,11 @@ class ChartDimensions {
 }
 
 export type RadarChartProps = {
-	datasets: Axis[];
-	design: ChartDesignState;
-	onClickCircularEdge?: EdgeClickHandler;
-	onClickOuterEdge?: EdgeClickHandler;
-	onClickRadialEdge?: EdgeClickHandler;
+	readonly datasets: Axis[];
+	readonly design: RadarChartDesign;
+	readonly onClickCircularEdge?: EdgeClickHandler;
+	readonly onClickOuterEdge?: EdgeClickHandler;
+	readonly onClickRadialEdge?: EdgeClickHandler;
 };
 
 export type EdgeClickHandler = (event: React.MouseEvent<SVGPathElement>, edgeIndex: number) => void;
@@ -50,7 +50,7 @@ export default function RadarChartLayout(props: RadarChartProps) {
 	}, [datasets, design]);
 
 	function getRadialEdges(axes: Axis[]): React.JSX.Element[] {
-		const edgesDesign = design.radialEdgesDesign;
+		const edgesDesign = design.radialEdges;
 		const angleInterval = 360 / axes.length;
 
 		const axesPaths = axes.map((axis, i) => {
@@ -74,9 +74,7 @@ export default function RadarChartLayout(props: RadarChartProps) {
 
 	function getCircularEdges(edgesPoints: Coordinate2D[][]): React.JSX.Element[] {
 		const edges = edgesPoints.slice(0, -1).map((edgePoints): React.JSX.Element => {
-			return (
-				<SVGEdge closed={true} design={design.circularEdgesDesign} key={edgePoints[0].toString()} points={edgePoints} />
-			);
+			return <SVGEdge closed={true} design={design.circularEdges} key={edgePoints[0].toString()} points={edgePoints} />;
 		});
 
 		return edges;
@@ -85,7 +83,7 @@ export default function RadarChartLayout(props: RadarChartProps) {
 	function getOuterEdge(edgesPoints: Coordinate2D[][]): React.JSX.Element {
 		const outerEdgePoints = edgesPoints[edgesPoints.length - 1];
 
-		return <SVGEdge closed={true} design={design.outerEdgeDesign} points={outerEdgePoints} key="outerEdge" />;
+		return <SVGEdge closed={true} design={design.outerEdge} points={outerEdgePoints} key="outerEdge" />;
 	}
 
 	return (
@@ -119,7 +117,7 @@ function calculateCircularEdgesPoints(axes: Axis[]): Coordinate2D[][] {
 function calculateRadialAxes(
 	chartDimensions: ChartDimensions,
 	dataSeries: Axis[],
-	chartDesign: ChartDesignState
+	chartDesign: RadarChartDesign
 ): Axis[] {
 	const angleInterval = 360 / dataSeries.length;
 
