@@ -66,6 +66,10 @@ export const selectCircularEdgesDesign = createSelector(
 	[pickChartDesignState],
 	(chartDesign: ChartDesignState) => chartDesign.circularEdgesDesign
 );
+export const selectStartingAngle = createSelector(
+	[pickChartDesignState],
+	(chartDesign: ChartDesignState) => chartDesign.startingAngle
+);
 
 /*
  ** Slice Setup
@@ -85,9 +89,17 @@ export const chartDesign = createSlice({
 		},
 		radialEdgesDesignChanged: (state: ChartDesignState, action: PayloadAction<EdgeDesign>) => {
 			state.radialEdgesDesign = action.payload;
+		},
+		startingAngleChanged: (state: ChartDesignState, action: PayloadAction<number>) => {
+			state.startingAngle = action.payload;
 		}
 	}
 });
 
-export const { nameChanged, circularEdgesDesignChanged, outerEdgeDesignChanged, radialEdgesDesignChanged } =
-	chartDesign.actions;
+export const {
+	nameChanged,
+	circularEdgesDesignChanged,
+	outerEdgeDesignChanged,
+	radialEdgesDesignChanged,
+	startingAngleChanged
+} = chartDesign.actions;

@@ -11,14 +11,18 @@ import {
 	radialEdgesDesignChanged,
 	EdgeDesign,
 	circularEdgesDesignChanged,
-	outerEdgeDesignChanged
+	outerEdgeDesignChanged,
+	startingAngleChanged,
+	selectStartingAngle
 } from '../../store/slices/RadarChartDesign';
+import { DegreesSlider } from '../../components/Forms/Inputs/DegreesSlider';
 
 export default function ChartConfigForm() {
 	const dispatch = useDispatch();
 	const circularEdgesDesign = useSelector(selectCircularEdgesDesign);
 	const outerEdgeDesign = useSelector(selectOuterEdgeDesign);
 	const radialEdgesDesign = useSelector(selectRadialEdgesDesign);
+	const startingAngle = useSelector(selectStartingAngle);
 	const [name, setName] = useState(useSelector(selectName));
 	const [axesAmount, setAxesAmount] = useState(5);
 	const [segmentsAmount, setSegmentsAmount] = useState(5);
@@ -73,6 +77,11 @@ export default function ChartConfigForm() {
 				title="Outer Edges"
 				design={outerEdgeDesign}
 				onConfigChange={(design: EdgeDesign) => dispatch(outerEdgeDesignChanged(design))}
+			/>
+			<DegreesSlider
+				title="Starting Angle"
+				defaultValue={startingAngle}
+				onChange={(value: number) => dispatch(startingAngleChanged(value))}
 			/>
 		</Space>
 	);
