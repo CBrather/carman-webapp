@@ -2,7 +2,7 @@ import './Layout.css';
 import { ChartDesignState } from '../../store/slices/RadarChartDesign';
 import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
 import { useEffect, useState } from 'react';
-import SVGEdge from '../../components/Forms/Charts/SVGEdge';
+import SVGEdge from '../../components/Charts/SVGEdge';
 
 class ChartDimensions {
 	width: number;
