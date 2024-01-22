@@ -1,31 +1,36 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { InputNumber, Space, Input } from 'antd';
 import { EdgeConfigForm } from '../../components/Forms/EdgeConfig';
-import {
-	selectCircularEdgesDesign,
-	selectOuterEdgeDesign,
-	selectRadialEdgesDesign,
-	selectName,
-	nameChanged,
-	radialEdgesDesignChanged,
-	EdgeDesign,
-	circularEdgesDesignChanged,
-	outerEdgeDesignChanged,
-	startingAngleChanged,
-	selectStartingAngle
-} from '../../store/slices/RadarChartDesign';
+import { nameChanged } from '../../store/slices/RadarChartDesign';
 import { DegreesSlider } from '../../components/Forms/Inputs/DegreesSlider';
+import { EdgeDesign, RadarChartDesign } from '../../api/api.gen';
 
-export default function ChartConfigForm() {
+interface Props {
+	readonly defaultDesign: RadarChartDesign;
+	readonly onChange: (chartDesign: RadarChartDesign) => void;
+}
+
+export default function ChartConfigForm(props: Props) {
 	const dispatch = useDispatch();
-	const circularEdgesDesign = useSelector(selectCircularEdgesDesign);
-	const outerEdgeDesign = useSelector(selectOuterEdgeDesign);
-	const radialEdgesDesign = useSelector(selectRadialEdgesDesign);
-	const startingAngle = useSelector(selectStartingAngle);
-	const [name, setName] = useState(useSelector(selectName));
 	const [axesAmount, setAxesAmount] = useState(5);
 	const [segmentsAmount, setSegmentsAmount] = useState(5);
+
+	const [circularEdges, setCircularEdges] = useState(props.defaultDesign.circularEdges);
+	const [name, setName] = useState(props.defaultDesign.name);
+	const [outerEdge, setOuterEdge] = useState(props.defaultDesign.outerEdge);
+	const [radialEdges, setRadialEdges] = useState(props.defaultDesign.radialEdges);
+	const [startingAngle, setStartingAngle] = useState(props.defaultDesign.startingAngle);
+
+	useEffect(() => {
+		props.onChange({
+			name,
+			circularEdges,
+			outerEdge,
+			radialEdges,
+			startingAngle
+		});
+	});
 
 	return (
 		<Space direction="vertical">
@@ -65,23 +70,23 @@ export default function ChartConfigForm() {
 			</Space>
 			<EdgeConfigForm
 				title="Radial Edges"
-				design={radialEdgesDesign}
-				onConfigChange={(design: EdgeDesign) => dispatch(radialEdgesDesignChanged(design))}
+				design={radialEdges}
+				onConfigChange={(design: EdgeDesign) => setRadialEdges(design)}
 			/>
 			<EdgeConfigForm
 				title="Circular Edges"
-				design={circularEdgesDesign}
-				onConfigChange={(design: EdgeDesign) => dispatch(circularEdgesDesignChanged(design))}
+				design={circularEdges}
+				onConfigChange={(design: EdgeDesign) => setCircularEdges(design)}
 			/>
 			<EdgeConfigForm
 				title="Outer Edges"
-				design={outerEdgeDesign}
-				onConfigChange={(design: EdgeDesign) => dispatch(outerEdgeDesignChanged(design))}
+				design={outerEdge}
+				onConfigChange={(design: EdgeDesign) => setOuterEdge(design)}
 			/>
 			<DegreesSlider
 				title="Starting Angle"
 				defaultValue={startingAngle}
-				onChange={(value: number) => dispatch(startingAngleChanged(value))}
+				onChange={(value: number) => setStartingAngle(value)}
 			/>
 		</Space>
 	);

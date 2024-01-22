@@ -1,7 +1,8 @@
 import { MouseEventHandler } from 'react';
 import { buildSVGPath } from '../../services/SVGPathBuilder';
-import { EdgeDesign, EdgeStyle } from '../../store/slices/RadarChartDesign';
+import { EdgeStyle } from '../../store/slices/RadarChartDesign';
 import { Coordinate2D } from '../../store/types/RadarChartTypes';
+import { EdgeDesign } from '../../api/api.gen';
 
 type Props = {
 	readonly design: EdgeDesign;
