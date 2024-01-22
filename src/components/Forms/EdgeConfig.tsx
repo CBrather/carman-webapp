@@ -2,10 +2,10 @@ import { Col, ColorPicker, InputNumber, Radio, RadioChangeEvent, Row, Space, Typ
 import { Color } from 'antd/es/color-picker';
 import { EdgeDesign, EdgeStyle } from '../../store/slices/RadarChartDesign';
 
-interface EdgeConfigFormProps {
-	design: EdgeDesign;
-	title: string;
-	onConfigChange: (design: EdgeDesign) => void;
+interface Props {
+	readonly design: EdgeDesign;
+	readonly title: string;
+	readonly onConfigChange: (design: EdgeDesign) => void;
 }
 
 const styleOptions = Object.keys(EdgeStyle)
@@ -18,7 +18,7 @@ const styleOptions = Object.keys(EdgeStyle)
 		);
 	});
 
-export function EdgeConfigForm(props: EdgeConfigFormProps) {
+export function EdgeConfigForm(props: Props) {
 	return (
 		<Space direction="vertical">
 			<Typography>{props.title}</Typography>
