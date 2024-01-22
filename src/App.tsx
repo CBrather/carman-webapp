@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Route, Routes } from 'react-router-dom';
 
 import ChartDesigner from './pages/ChartDesigner';
-import ModelEditor from './pages/ModelEditor';
+import ModelEditor from './pages/ScaleEditor';
 import Homepage from './pages/Home';
 import { GetEnvironmentConfig } from './services/Environment';
 
