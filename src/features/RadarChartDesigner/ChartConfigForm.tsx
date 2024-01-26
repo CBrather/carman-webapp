@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import { InputNumber, Space, Input } from 'antd';
 import { EdgeConfigForm } from '../../components/Forms/EdgeConfig';
-import { nameChanged } from '../../store/slices/RadarChartDesign';
 import { DegreesSlider } from '../../components/Forms/Inputs/DegreesSlider';
 import { EdgeDesign, RadarChartDesign } from '../../api/api.gen';
 
@@ -12,7 +10,6 @@ interface Props {
 }
 
 export default function ChartConfigForm(props: Props) {
-	const dispatch = useDispatch();
 	const [axesAmount, setAxesAmount] = useState(5);
 	const [segmentsAmount, setSegmentsAmount] = useState(5);
 
@@ -22,7 +19,7 @@ export default function ChartConfigForm(props: Props) {
 	const [radialEdges, setRadialEdges] = useState(props.defaultDesign.radialEdges);
 	const [startingAngle, setStartingAngle] = useState(props.defaultDesign.startingAngle);
 
-	useEffect(() => {
+	const propagateChange = () => {
 		props.onChange({
 			name,
 			circularEdges,
@@ -30,7 +27,7 @@ export default function ChartConfigForm(props: Props) {
 			radialEdges,
 			startingAngle
 		});
-	});
+	};
 
 	return (
 		<Space direction="vertical">
@@ -41,13 +38,9 @@ export default function ChartConfigForm(props: Props) {
 				onChange={(event) => {
 					setName(event.target.value);
 				}}
-				onBlur={() => {
-					dispatch(nameChanged(name));
-				}}
+				onBlur={propagateChange}
 				onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-					if (event.key === 'Enter') {
-						dispatch(nameChanged(name));
-					}
+					if (event.key === 'Enter') propagateChange();
 				}}
 			/>
 			<Space>
@@ -71,22 +64,34 @@ export default function ChartConfigForm(props: Props) {
 			<EdgeConfigForm
 				title="Radial Edges"
 				design={radialEdges}
-				onConfigChange={(design: EdgeDesign) => setRadialEdges(design)}
+				onConfigChange={(design: EdgeDesign) => {
+					setRadialEdges(design);
+					propagateChange();
+				}}
 			/>
 			<EdgeConfigForm
 				title="Circular Edges"
 				design={circularEdges}
-				onConfigChange={(design: EdgeDesign) => setCircularEdges(design)}
+				onConfigChange={(design: EdgeDesign) => {
+					setCircularEdges(design);
+					propagateChange();
+				}}
 			/>
 			<EdgeConfigForm
 				title="Outer Edges"
 				design={outerEdge}
-				onConfigChange={(design: EdgeDesign) => setOuterEdge(design)}
+				onConfigChange={(design: EdgeDesign) => {
+					setOuterEdge(design);
+					propagateChange();
+				}}
 			/>
 			<DegreesSlider
 				title="Starting Angle"
 				defaultValue={startingAngle}
-				onChange={(value: number) => setStartingAngle(value)}
+				onChange={(value: number) => {
+					setStartingAngle(value);
+					propagateChange();
+				}}
 			/>
 		</Space>
 	);
