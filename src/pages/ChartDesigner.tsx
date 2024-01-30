@@ -5,7 +5,12 @@ import { useSelector } from 'react-redux';
 import { EdgeStyle } from '../store/slices/RadarChartDesign';
 import { selectAxes } from '../store/slices/DataSet';
 import { useState } from 'react';
-import { EdgeDesign, RadarChartDesign } from '../api/api.gen';
+import {
+	EdgeDesign,
+	RadarChartDesign,
+	usePostChartsDesignsRadarMutation,
+	usePutChartsDesignsRadarByDesignIdMutation
+} from '../api/api.gen';
 
 const DEFAULT_EDGE_DESIGN: EdgeDesign = {
 	color: '#838383',
@@ -20,16 +25,38 @@ const DEFAULT_CHART_DESIGN: RadarChartDesign = {
 	startingAngle: 0
 };
 
-export default function ChartDesigner() {
-	const [chartDesign, setChartDesign] = useState(DEFAULT_CHART_DESIGN);
+interface Props {
+	readonly initialDesign?: RadarChartDesign;
+}
+
+export default function ChartDesigner(props?: Props) {
+	const [chartDesign, setChartDesign] = useState(props?.initialDesign ?? DEFAULT_CHART_DESIGN);
+	const [designID, setDesignID] = useState(props?.initialDesign?.id ?? '');
+
 	const datasets = useSelector(selectAxes);
 
-	const onConfigChange = (design: RadarChartDesign) => setChartDesign(design);
+	const [saveNewDesign] = usePostChartsDesignsRadarMutation();
+	const [updateDesign] = usePutChartsDesignsRadarByDesignIdMutation();
+
+	const onConfigChange = (design: RadarChartDesign) => {
+		setChartDesign({ ...design, id: designID });
+	};
+
+	const onSubmit = async () => {
+		if (chartDesign.id) {
+			return updateDesign({ designId: chartDesign.id, radarChartDesign: chartDesign }).unwrap();
+		}
+
+		const savedDesign = await saveNewDesign({ radarChartDesign: chartDesign }).unwrap();
+		if (savedDesign.id) setDesignID(savedDesign.id);
+
+		return savedDesign;
+	};
 
 	return (
 		<Space>
 			<RadarChartLayout datasets={datasets} design={chartDesign} />
-			<ChartConfigForm defaultDesign={chartDesign} onChange={onConfigChange} />
+			<ChartConfigForm defaultDesign={chartDesign} onChange={onConfigChange} onSubmit={onSubmit} />
 		</Space>
 	);
 }
