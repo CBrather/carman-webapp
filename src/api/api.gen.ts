@@ -7,6 +7,16 @@ const injectedRtkApi = api.injectEndpoints({
 		>({
 			query: (queryArg) => ({ url: `/charts/designs/radar/${queryArg.designId}` })
 		}),
+		putChartsDesignsRadarByDesignId: build.mutation<
+			PutChartsDesignsRadarByDesignIdApiResponse,
+			PutChartsDesignsRadarByDesignIdApiArg
+		>({
+			query: (queryArg) => ({
+				url: `/charts/designs/radar/${queryArg.designId}`,
+				method: 'PUT',
+				body: queryArg.radarChartDesign
+			})
+		}),
 		getChartsDesignsRadar: build.query<GetChartsDesignsRadarApiResponse, GetChartsDesignsRadarApiArg>({
 			query: () => ({ url: `/charts/designs/radar` })
 		}),
@@ -21,6 +31,12 @@ export type GetChartsDesignsRadarByDesignIdApiResponse = /** status 200 A radar 
 export type GetChartsDesignsRadarByDesignIdApiArg = {
 	/** The unique identifier of the chart design */
 	designId: Id;
+};
+export type PutChartsDesignsRadarByDesignIdApiResponse = /** status 200 A radar chart design */ RadarChartDesign;
+export type PutChartsDesignsRadarByDesignIdApiArg = {
+	/** The unique identifier of the chart design */
+	designId: Id;
+	radarChartDesign: RadarChartDesign;
 };
 export type GetChartsDesignsRadarApiResponse = /** status 200 A list of radar chart designs */ {
 	items: RadarChartDesign[];
@@ -46,6 +62,7 @@ export type RadarChartDesign = {
 };
 export const {
 	useGetChartsDesignsRadarByDesignIdQuery,
+	usePutChartsDesignsRadarByDesignIdMutation,
 	useGetChartsDesignsRadarQuery,
 	usePostChartsDesignsRadarMutation
 } = injectedRtkApi;
