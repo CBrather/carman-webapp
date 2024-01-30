@@ -11,6 +11,6 @@ svg.chart-layout {
 	stroke-width: 2px;
 }
 
-.radial-axis:hover {
+.axis:hover {
 	stroke: #d4380d;
 }

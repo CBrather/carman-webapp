@@ -51,7 +51,7 @@ export default function RadarChartLayout(props: RadarChartProps) {
 
 			return (
 				<SVGEdge
-					className="radial-axis"
+					className="axis"
 					design={edgesDesign}
 					points={points}
 					key={axis.label}
@@ -67,6 +67,7 @@ export default function RadarChartLayout(props: RadarChartProps) {
 		const edges = edgesPoints.slice(0, -1).map((edgePoints): React.JSX.Element => {
 			return (
 				<SVGEdge
+					className="axis"
 					closed={true}
 					design={design.circularEdges}
 					key={edgePoints[0].x + edgePoints[0].y}
@@ -86,7 +87,7 @@ export default function RadarChartLayout(props: RadarChartProps) {
 
 	return (
 		<div
-			className="chart"
+			id="chart-layout"
 			style={{
 				width: dimensions.width + 'px',
 				height: dimensions.height + 'px'
