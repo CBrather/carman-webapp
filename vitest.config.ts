@@ -17,9 +17,9 @@ export default defineConfig({
 			exclude: ['src/**/*.test.{js,jsx,ts,tsx}', '**/test/**/*'],
 			provider: 'v8',
 			reporter: ['lcov'],
-			reportsDirectory: 'test/coverage'
+			reportsDirectory: 'reports/coverage'
 		},
-		outputFile: 'test/results.xml',
+		outputFile: 'reports/test-results.xml',
 		reporters: ['default', 'junit'],
 		setupFiles: ['src/test/setup/setup.ts']
 	}
