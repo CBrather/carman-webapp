@@ -32,7 +32,7 @@ jobs:
         if: always()
         with:
           name: Tests Results
-          path: test/results.xml
+          path: reports/test-results.xml
           reporter: java-junit
 
       - name: SonarCloud Scan
