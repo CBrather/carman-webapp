@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Col, InputNumber, Row, Slider, Typography } from 'antd';
 
 const VALUE_MIN = 0;
@@ -15,8 +14,6 @@ export function DegreesSlider(props: Props) {
 	if (defaultValue < VALUE_MIN) defaultValue = VALUE_MIN;
 	if (defaultValue > VALUE_MAX) defaultValue = VALUE_MAX;
 
-	const [sliderValue, setSliderValue] = useState(defaultValue);
-
 	return (
 		<>
 			<Typography>{props.title}</Typography>
@@ -25,7 +22,7 @@ export function DegreesSlider(props: Props) {
 					<Slider min={0} max={359} value={props.value} onChange={props.onChange} />
 				</Col>
 				<Col span={8}>
-					<InputNumber min={0} max={359} value={sliderValue} onChange={(value) => setSliderValue(value ?? 0)} />
+					<InputNumber min={0} max={359} value={props.value} onChange={(value) => props.onChange(value ?? 0)} />
 				</Col>
 			</Row>
 		</>
