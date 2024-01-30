@@ -1,8 +1,9 @@
+import { Button, Input, InputNumber, Space } from 'antd';
 import { useState } from 'react';
-import { Button, InputNumber, Space, Input } from 'antd';
+
+import { EdgeDesign, RadarChartDesign } from '../../api/api.gen';
 import { EdgeConfigForm } from '../../components/Forms/EdgeConfig';
 import { DegreesSlider } from '../../components/Forms/Inputs/DegreesSlider';
-import { EdgeDesign, RadarChartDesign } from '../../api/api.gen';
 
 interface Props {
 	readonly defaultDesign: RadarChartDesign;

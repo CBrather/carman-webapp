@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 import { GetEnvironmentConfig } from '../services/Environment';
 import { ThunkExtra } from '../store/wrappers';
 

@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { AxisTick } from '../../../store/types/RadarChartTypes';
 import { Input } from 'antd';
+import { useState } from 'react';
+
+import { AxisTick } from '../../../store/types/RadarChartTypes';
 
 interface Props {
 	readonly index: number;
