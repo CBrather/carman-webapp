@@ -1,30 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { TickInput } from './Inputs/TickInput';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedAxis, axisTickLabelChanged, axisLabelChanged } from '../../store/slices/DataSet';
+import { useDispatch } from 'react-redux';
+import { axisTickLabelChanged, axisLabelChanged } from '../../store/slices/DataSet';
 import { Input, Space } from 'antd';
+import { Axis, AxisTick } from '../../store/types/RadarChartTypes';
 
-export function AxisConfigForm() {
+type Props = {
+	readonly selectedAxis: {
+		axis: Axis;
+		index: number;
+	};
+};
+
+export function AxisConfigForm(props: Props) {
 	const dispatch = useDispatch();
-	const selectedAxis = useSelector(selectSelectedAxis);
-
-	const [tickInputs, setTickInputs] = useState<React.JSX.Element[]>([]);
-	const [label, setLabel] = useState(selectedAxis.axis.label);
-
 	const onInputChange = (index: number, label: string): void => {
 		dispatch(axisTickLabelChanged({ axisIndex: selectedAxis.index, tickIndex: index, label }));
 	};
 
-	useEffect(() => {
-		const newTickInputs: React.JSX.Element[] = [];
-		const { ticks } = selectedAxis.axis;
+	const { selectedAxis } = props;
 
-		for (let i = 0; i < ticks.length; i++) {
-			newTickInputs.push(<TickInput index={i} tick={ticks[i]} onInputChange={onInputChange} key={ticks[i].label} />);
-		}
-
-		setTickInputs(newTickInputs);
-	}, [selectedAxis]);
+	const [axisLabel, setAxisLabel] = useState(props.selectedAxis.axis.label);
 
 	return (
 		<>
@@ -32,16 +28,25 @@ export function AxisConfigForm() {
 				<Input
 					value={selectedAxis.axis.label}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-						setLabel(event.target.value);
+						setAxisLabel(event.target.value);
 					}}
 					onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
 						if (event.key === 'Enter' || event.key === 'Tab') {
-							dispatch(axisLabelChanged({ index: selectedAxis.index, label }));
+							dispatch(axisLabelChanged({ index: selectedAxis.index, label: axisLabel }));
 						}
 					}}
 				/>
 			</Space>
-			<Space direction="horizontal">{tickInputs}</Space>
+			<Space direction="horizontal">{generateTickInputs(selectedAxis.axis.ticks, onInputChange)}</Space>
 		</>
 	);
+}
+
+function generateTickInputs(
+	ticks: AxisTick[],
+	onInputChange: (index: number, label: string) => void
+): React.JSX.Element[] {
+	return ticks.map((tick, index) => {
+		return <TickInput index={index} tick={tick} onInputChange={onInputChange} key={tick.label} />;
+	});
 }

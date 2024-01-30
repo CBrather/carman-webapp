@@ -1,12 +1,16 @@
+import { useSelector } from 'react-redux';
 import { AxisConfigForm } from '../../components/Forms/AxisConfigForm';
 import { Space, Typography } from 'antd';
+import { selectSelectedAxis } from '../../store/slices/DataSet';
 
 export default function ScaleConfigForm() {
+	const selectedAxis = useSelector(selectSelectedAxis);
+
 	return (
 		<Space direction="vertical">
 			<Space direction="vertical">
 				<Typography>Dimension</Typography>
-				<AxisConfigForm />
+				<AxisConfigForm selectedAxis={selectedAxis} />
 			</Space>
 		</Space>
 	);
