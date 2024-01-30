@@ -20,8 +20,6 @@ class ChartDimensions {
 export type RadarChartProps = {
 	readonly datasets: Axis[];
 	readonly design: RadarChartDesign;
-	readonly onClickCircularEdge?: EdgeClickHandler;
-	readonly onClickOuterEdge?: EdgeClickHandler;
 	readonly onClickRadialEdge?: EdgeClickHandler;
 };
 
@@ -56,7 +54,7 @@ export default function RadarChartLayout(props: RadarChartProps) {
 					className="radial-axis"
 					design={edgesDesign}
 					points={points}
-					key={axis.label + i}
+					key={axis.label}
 					onClick={(e) => onClickRadialEdge(e, i)}
 				/>
 			);
