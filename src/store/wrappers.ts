@@ -1,8 +1,10 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { AnyAction, ThunkDispatch, createAsyncThunk } from '@reduxjs/toolkit';
+
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { ChartDesignState, SLICE_NAME as CHART_DESIGN_SLICE_NAME } from './slices/RadarChartDesign';
-import { DataSetState, SLICE_NAME as DATA_SET_SLICE_NAME } from './slices/DataSet';
+import { AnyAction, ThunkDispatch, createAsyncThunk } from '@reduxjs/toolkit';
+
+import { SLICE_NAME as DATA_SET_SLICE_NAME, DataSetState } from './slices/DataSet';
+import { SLICE_NAME as CHART_DESIGN_SLICE_NAME, ChartDesignState } from './slices/RadarChartDesign';
 
 type DispatchFunc = () => AppDispatch;
 

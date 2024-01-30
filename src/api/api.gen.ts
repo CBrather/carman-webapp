@@ -1,4 +1,5 @@
 import { api } from './api';
+
 const injectedRtkApi = api.injectEndpoints({
 	endpoints: (build) => ({
 		getChartsDesignsRadarByDesignId: build.query<

@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { TickInput } from './Inputs/TickInput';
-import { useDispatch } from 'react-redux';
-import { axisTickLabelChanged, axisLabelChanged } from '../../store/slices/DataSet';
 import { Input, Space } from 'antd';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { axisLabelChanged, axisTickLabelChanged } from '../../store/slices/DataSet';
 import { Axis, AxisTick } from '../../store/types/RadarChartTypes';
+import { TickInput } from './Inputs/TickInput';
 
 type Props = {
 	readonly selectedAxis: {

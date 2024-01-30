@@ -1,16 +1,16 @@
+import { ConfigProvider, theme } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
-import { ConfigProvider, theme } from 'antd';
 import { lime } from '@ant-design/colors';
 import { Auth0Provider } from '@auth0/auth0-react';
 
-import { Provider } from 'react-redux';
-import store from './store/store.ts';
 import App from './App.tsx';
 import './index.css';
-import { BrowserRouter } from 'react-router-dom';
 import { GetEnvironmentConfig } from './services/Environment.ts';
+import store from './store/store.ts';
 
 const { clientID, domain } = GetEnvironmentConfig().auth;
 

@@ -1,5 +1,7 @@
+import { describe, expect, it } from 'vitest';
+
 import { configureStore } from '@reduxjs/toolkit';
-import { expect, it, describe } from 'vitest';
+
 import { EdgeStyle, chartDesign } from './RadarChartDesign';
 
 describe('Slice: RadarChartConfig', () => {

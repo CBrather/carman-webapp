@@ -1,5 +1,6 @@
-import { describe, it, expect, afterAll, beforeAll } from 'vitest';
-import { GetEnvironmentConfig, EnvironmentConfig } from './Environment';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+import { EnvironmentConfig, GetEnvironmentConfig } from './Environment';
 
 describe('GetEnvironment Config', () => {
 	let originalWindowEnv: EnvironmentConfig | undefined;

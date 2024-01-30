@@ -1,16 +1,17 @@
 import { Space } from 'antd';
-import ChartConfigForm from '../features/RadarChartDesigner/ChartConfigForm';
-import RadarChartLayout from '../features/RadarChart/Layout';
-import { useSelector } from 'react-redux';
-import { EdgeStyle } from '../store/slices/RadarChartDesign';
-import { selectAxes } from '../store/slices/DataSet';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+
 import {
 	EdgeDesign,
 	RadarChartDesign,
 	usePostChartsDesignsRadarMutation,
 	usePutChartsDesignsRadarByDesignIdMutation
 } from '../api/api.gen';
+import RadarChartLayout from '../features/RadarChart/Layout';
+import ChartConfigForm from '../features/RadarChartDesigner/ChartConfigForm';
+import { selectAxes } from '../store/slices/DataSet';
+import { EdgeStyle } from '../store/slices/RadarChartDesign';
 
 const DEFAULT_EDGE_DESIGN: EdgeDesign = {
 	color: '#838383',

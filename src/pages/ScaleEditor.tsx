@@ -1,10 +1,11 @@
 import { Space } from 'antd';
-import ScaleConfigForm from '../features/ScaleEditor/ScaleConfigForm';
-import RadarChartLayout from '../features/RadarChart/Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChartDesignState, selectChartDesign } from '../store/slices/RadarChartDesign';
-import { axisSelected, selectAxes } from '../store/slices/DataSet';
+
 import { RadarChartDesign } from '../api/api.gen';
+import RadarChartLayout from '../features/RadarChart/Layout';
+import ScaleConfigForm from '../features/ScaleEditor/ScaleConfigForm';
+import { axisSelected, selectAxes } from '../store/slices/DataSet';
+import { ChartDesignState, selectChartDesign } from '../store/slices/RadarChartDesign';
 
 function designStateToAPIType(designState: ChartDesignState): RadarChartDesign {
 	const design: RadarChartDesign = {

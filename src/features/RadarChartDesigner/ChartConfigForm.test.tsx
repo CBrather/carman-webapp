@@ -1,8 +1,10 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, fireEvent, screen, within } from '@testing-library/react';
-import ChartConfigForm from './ChartConfigForm';
-import { testChartDesign } from '../../test/data/radarChartDesigns';
+import { describe, expect, it, vi } from 'vitest';
+
+import { fireEvent, render, screen, within } from '@testing-library/react';
+
 import { RadarChartDesign } from '../../api/api.gen';
+import { testChartDesign } from '../../test/data/radarChartDesigns';
+import ChartConfigForm from './ChartConfigForm';
 
 describe('ChartConfigForm', () => {
 	it('calls onChange with changed name value', async () => {

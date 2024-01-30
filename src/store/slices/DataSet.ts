@@ -1,4 +1,5 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
+
 import { Axis, AxisTick, Coordinate2D } from '../types/RadarChartTypes';
 
 export const SLICE_NAME = 'dataSet';
