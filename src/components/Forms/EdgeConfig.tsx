@@ -21,7 +21,7 @@ const styleOptions = Object.keys(EdgeStyle)
 
 export function EdgeConfigForm(props: Props) {
 	return (
-		<Space direction="vertical">
+		<Space direction="vertical" data-testid={props.title}>
 			<Typography>{props.title}</Typography>
 			<Row>
 				<Col span={8}>

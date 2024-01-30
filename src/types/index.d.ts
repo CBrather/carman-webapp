@@ -4,6 +4,6 @@ export {};
 
 declare global {
 	interface Window {
-		env: EnvironmentConfig;
+		env: EnvironmentConfig | undefined;
 	}
 }
