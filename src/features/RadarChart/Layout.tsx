@@ -1,6 +1,5 @@
 import './Layout.css';
 import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
-import { useEffect, useState } from 'react';
 import SVGEdge from '../../components/Charts/SVGEdge';
 import { RadarChartDesign } from '../../api/api.gen';
 
@@ -38,16 +37,10 @@ export default function RadarChartLayout(props: RadarChartProps) {
 		}
 	} = props;
 
-	const [radialEdges, setRadialEdges] = useState<React.JSX.Element[]>();
-	const [circularEdges, setCircularEdges] = useState<React.JSX.Element[]>();
-
-	useEffect(() => {
-		const axes = calculateRadialAxes(dimensions, datasets, design);
-		const circularEdgesPoints = calculateCircularEdgesPoints(axes);
-
-		setCircularEdges([...getCircularEdges(circularEdgesPoints), getOuterEdge(circularEdgesPoints)]);
-		setRadialEdges(getRadialEdges(axes));
-	}, [datasets, design]);
+	const axes = calculateRadialAxes(dimensions, datasets, design);
+	const radialEdges = getRadialEdges(axes);
+	const circularEdgesPoints = calculateCircularEdgesPoints(axes);
+	const circularEdges = [...getCircularEdges(circularEdgesPoints), getOuterEdge(circularEdgesPoints)];
 
 	function getRadialEdges(axes: Axis[]): React.JSX.Element[] {
 		const edgesDesign = design.radialEdges;
@@ -74,7 +67,14 @@ export default function RadarChartLayout(props: RadarChartProps) {
 
 	function getCircularEdges(edgesPoints: Coordinate2D[][]): React.JSX.Element[] {
 		const edges = edgesPoints.slice(0, -1).map((edgePoints): React.JSX.Element => {
-			return <SVGEdge closed={true} design={design.circularEdges} key={edgePoints[0].toString()} points={edgePoints} />;
+			return (
+				<SVGEdge
+					closed={true}
+					design={design.circularEdges}
+					key={edgePoints[0].x + edgePoints[0].y}
+					points={edgePoints}
+				/>
+			);
 		});
 
 		return edges;
@@ -94,7 +94,7 @@ export default function RadarChartLayout(props: RadarChartProps) {
 				height: dimensions.height + 'px'
 			}}
 		>
-			<svg width={dimensions.width} height={dimensions.height} className="chart-layout">
+			<svg key={design.name} width={dimensions.width} height={dimensions.height} className="chart-layout">
 				{radialEdges}
 				{circularEdges}
 			</svg>
