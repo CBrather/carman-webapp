@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest';
-import { buildSVGPath } from './SVGPathBuilder';
+import { describe, expect, it } from 'vitest';
+
 import { Coordinate2D } from '../store/types/RadarChartTypes';
+import { buildSVGPath } from './SVGPathBuilder';
 
 describe('SVGPathBuilder', () => {
 	it('should build path from first to last point when closed is false', () => {

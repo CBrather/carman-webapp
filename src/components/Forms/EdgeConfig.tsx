@@ -1,7 +1,8 @@
 import { Col, ColorPicker, InputNumber, Radio, RadioChangeEvent, Row, Space, Typography } from 'antd';
 import { Color } from 'antd/es/color-picker';
-import { EdgeStyle } from '../../store/slices/RadarChartDesign';
+
 import { EdgeDesign } from '../../api/api.gen';
+import { EdgeStyle } from '../../store/slices/RadarChartDesign';
 
 interface Props {
 	readonly design: EdgeDesign;

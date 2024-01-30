@@ -1,7 +1,7 @@
-import './Layout.css';
-import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
-import SVGEdge from '../../components/Charts/SVGEdge';
 import { RadarChartDesign } from '../../api/api.gen';
+import SVGEdge from '../../components/Charts/SVGEdge';
+import { Axis, Coordinate2D } from '../../store/types/RadarChartTypes';
+import './Layout.css';
 
 class ChartDimensions {
 	width: number;

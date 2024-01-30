@@ -1,13 +1,14 @@
 import { Layout, Menu } from 'antd';
 import { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems';
+import { useEffect, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+
 import { EditOutlined, RadarChartOutlined } from '@ant-design/icons';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, Route, Routes } from 'react-router-dom';
 
 import ChartDesigner from './pages/ChartDesigner';
-import ModelEditor from './pages/ScaleEditor';
 import Homepage from './pages/Home';
+import ModelEditor from './pages/ScaleEditor';
 import { GetEnvironmentConfig } from './services/Environment';
 
 const { Content, Sider } = Layout;

@@ -1,8 +1,10 @@
+import { describe, expect, it } from 'vitest';
+
 import { render } from '@testing-library/react';
-import RadarChartLayout from './Layout';
-import { testChartDesign } from '../../test/data/radarChartDesigns';
-import { describe, it, expect } from 'vitest';
+
 import { testDataset } from '../../test/data/datasets';
+import { testChartDesign } from '../../test/data/radarChartDesigns';
+import RadarChartLayout from './Layout';
 
 describe('RadarChartLayout', () => {
 	it('renders RadarChartLayout component with respective SVG paths', async () => {
