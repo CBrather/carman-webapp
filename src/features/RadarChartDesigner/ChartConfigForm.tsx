@@ -32,7 +32,7 @@ export default function ChartConfigForm(props: Props) {
 	return (
 		<Space direction="vertical">
 			<Input
-				bordered={false}
+				variant="borderless"
 				size="large"
 				value={name}
 				onChange={(event) => {
